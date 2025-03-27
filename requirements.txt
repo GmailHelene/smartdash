@@ -1,8 +1,7 @@
-dash==2.11.1
-pandas==1.5.3
+pandas==2.2.3
+dash
 numpy==1.23.5
-dash_table==5.0.0
-dash-bootstrap-components
+streamlit==1.44.0
 plotly
-flask
+dash-bootstrap-components
 google-analytics-data

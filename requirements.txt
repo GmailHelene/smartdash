@@ -1,6 +1,6 @@
 pandas==2.2.3
 dash
-numpy==1.23.5
+numpy==2.2.4
 streamlit==1.44.0
 plotly
 dash-bootstrap-components

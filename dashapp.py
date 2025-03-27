@@ -282,10 +282,6 @@ with tabs[2]:
      # Beregn total kostnad for anbefalt innkjøp
     st.markdown("### Anbefalt innkjøpsstrategi")
     st.markdown("Her er en oversikt over anbefalte innkjøp basert på salgsdata av valgt hovedprodukt i filtreringen over:")
-    # Sjekk om df er tom
-   if df_sorted.empty:
-    st.error("Ingen data tilgjengelig for beregning av total kostnad.")
-else:
     # Beregn total kostnad for anbefalt innkjøp
     total_cost = 0
     for index, row in df_sorted.iterrows():

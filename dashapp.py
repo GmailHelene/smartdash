@@ -575,11 +575,11 @@ with tabs[6]:
     st.header("Bedriftsråd & Verdivurdering")
     st.markdown("""
     Her oppsummeres bedriftsråd, samt nøkkeltall knyttet til optimal budsjettering og produktprising.
-    ✅ Optimaliser lagerstyring: Juster vareinnkjøp etter faktisk etterspørsel.  
-    ✅ Reduser kostnader: Forhandle med leverandører og effektiviser interne prosesser.  
-    ✅ Forbedre markedsføring: Følg SEO-strategien og publiser jevnlig i SoMe-kanaler.  
-    ✅ Øk konverteringsrate: Optimaliser brukeropplevelsen på nettsiden.  
-    ✅ Overvåk jevnlig: Følg nøkkeltall og handle raskt ved budsjettavvik.
+     Optimaliser lagerstyring: Juster vareinnkjøp etter faktisk etterspørsel.  
+     Reduser kostnader: Forhandle med leverandører og effektiviser interne prosesser.  
+     Forbedre markedsføring: Følg SEO-strategien og publiser jevnlig i SoMe-kanaler.  
+     Øk konverteringsrate: Optimaliser brukeropplevelsen på nettsiden.  
+     Overvåk jevnlig: Følg nøkkeltall og handle raskt ved budsjettavvik.
     """)           
       ebitda = 755000
     try:

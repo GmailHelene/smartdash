@@ -43,6 +43,17 @@ st.markdown("""
     div[data-testid="stTabs"] > div {
         overflow-x: auto;
         white-space: nowrap;
+        scrollbar-width: thin; /* Gjør scrollbaren tynnere */
+    }
+    div[data-testid="stTabs"]::-webkit-scrollbar {
+        height: 12px; /* Øk høyden på scrollbaren */
+    }
+    div[data-testid="stTabs"]::-webkit-scrollbar-thumb {
+        background-color: #888; /* Farge på scrollbaren */
+        border-radius: 10px; /* Gjør scrollbaren rundere */
+    }
+    div[data-testid="stTabs"]::-webkit-scrollbar-thumb:hover {
+        background-color: #555; /* Farge når man holder over scrollbaren */
     }
     div[data-testid="stTabs"] button {
         flex-shrink: 0;
@@ -235,27 +246,27 @@ må omsetningen være minst {optimal_revenue:,.0f} kr for å oppnå ønsket fort
 # FANE 3 – Lagerinnsikt & Innkjøpsstrategi (Filtrering på produktnavn og lengde)
 with tabs[2]:
     st.header("Lagerinnsikt & Innkjøpsstrategi (Filtrering på produktnavn og lengde)")
-    
-    # Velg produktnavn
+
+    # Velg produktnavn med standardverdi
     selected_product = st.selectbox(
         "Velg produktnavn",
         options=["Alle"] + sorted(product_sales_df["product_name"].dropna().unique()),
         index=0,  # "Alle" som standard
         key="product_name_filter"
     )
-    
-    # Velg lengde
+
+    # Velg lengde med standardverdi
     selected_length = st.selectbox(
         "Velg lengde (cm)", 
         options=["Alle", "Tom", "40 cm", "50 cm", "55 cm", "60 cm"], 
         index=0,  # "Alle" som standard
         key="length_filter"
     )
-    
-    # Velg datoer
-    inv_start_date = st.date_input("Startdato", value=datetime(2023, 1, 1), key="sku_start")
-    inv_end_date = st.date_input("Sluttdato", value=datetime(2025, 12, 31), key="sku_end")
-    
+
+    # Velg datoer med standardverdier
+    inv_start_date = st.date_input("Startdato", value=datetime(2024, 1, 1), key="sku_start")
+    inv_end_date = st.date_input("Sluttdato", value=datetime(2024, 12, 31), key="sku_end")
+
     # Filtrer data basert på dato
     mask = (product_sales_df["date"] >= pd.to_datetime(inv_start_date)) & \
            (product_sales_df["date"] <= pd.to_datetime(inv_end_date))
@@ -288,7 +299,6 @@ with tabs[2]:
 
         # Beregn total kostnad for anbefalt innkjøp
         total_cost = 0
-        # Legg til en overskrift før listen
         st.markdown("### Anbefalt innkjøpsstrategi")
         st.markdown("Her er en oversikt over anbefalte innkjøp basert på salgsdata av valgt hovedprodukt i filtreringen over:")
 
@@ -299,6 +309,7 @@ with tabs[2]:
             st.markdown(f"- **{row['sku']}**: Anbefalt innkjøp {row['Anbefalt innkjøp']} enheter")
 
         st.markdown(f"**Total kostnad for anbefalt innkjøp:** {total_cost:,.0f} kr")
+
 
         # Begrens antall rader i diagrammet til maks 25
         df_chart = df_sorted.head(25)

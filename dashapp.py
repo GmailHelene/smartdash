@@ -247,19 +247,29 @@ må omsetningen være minst {optimal_revenue:,.0f} kr for å oppnå ønsket fort
 with tabs[2]:
     st.header("Lagerinnsikt & Innkjøpsstrategi (Filtrering på produktnavn og lengde)")
 
+    # Available product names
+    product_options = sorted(product_sales_df["product_name"].dropna().unique())
+    default_products = ["Clip On", "Keratin", "Tape Extensions"]
+    valid_default_products = [p for p in default_products if p in product_options]
+
     # Velg produktnavn med standardverdi
     selected_products = st.multiselect(
         "Velg produktnavn (opptil 3)",
-        options=sorted(product_sales_df["product_name"].dropna().unique()),
-        default=["Clip On", "Keratin", "Tape Extensions"],
+        options=product_options,
+        default=valid_default_products,
         key="product_name_filter"
     )
+
+    # Available lengths
+    length_options = ["40 cm", "50 cm", "55 cm", "60 cm"]
+    default_lengths = ["40 cm", "50 cm", "55 cm"]
+    valid_default_lengths = [l for l in default_lengths if l in length_options]
 
     # Velg lengde med standardverdi
     selected_lengths = st.multiselect(
         "Velg lengde (cm)",
-        options=["40 cm", "50 cm", "55 cm", "60 cm"],
-        default=["40 cm", "50 cm", "55 cm"],
+        options=length_options,
+        default=valid_default_lengths,
         key="length_filter"
     )
 
@@ -328,7 +338,7 @@ with tabs[2]:
             df_sorted[["sku", "product_name", "antallsolgt"]].head(40),
             height=800  # Juster høyden for å vise 40 rader uten scrolling
         )
-    
+
     # Seksjon for lagerinnkjøp og anbefalinger
     st.markdown("### Lagerinnkjøp og anbefalinger")
     st.markdown("""

@@ -358,8 +358,7 @@ with tabs[2]:
 with tabs[3]:
     st.header("Digital Analyse & SEO")
     st.markdown("""
-**LuxusHair Analytics Integrasjon**  
-Dette er LuxusHair sin Analytics-integrasjon – standarddata benyttes, men denne løsningen kan custom-integreres for den enkelte bedrift.
+# Combine "Konkurrentanalyse" with "Digital Analyse & SEO"""
     """)
     if "date" not in traffic_df.columns:
         st.error("Ingen 'date' kolonne funnet i trafikkdata.")
@@ -385,13 +384,6 @@ Dette er LuxusHair sin Analytics-integrasjon – standarddata benyttes, men denn
 - Postingsplan: Instagram (3–4 innlegg/uke), Facebook (2–3 innlegg/uke), YouTube (1 video/uke), Blogg (2–3 innlegg/måned), Pinterest (daglige pins)
     """, unsafe_allow_html=True)
 
-# Combine "Konkurrentanalyse" with "Digital Analyse & SEO"
-with tabs[3]:
-    st.header("SEO & Konkurrentanalyse")
-    st.markdown("""
-    **LuxusHair Analytics Integrasjon**  
-    Dette er LuxusHair sin Analytics-integrasjon – standarddata benyttes, men denne løsningen kan custom-integreres for den enkelte bedrift.
-    """)
     if "date" not in traffic_df.columns:
         st.error("Ingen 'date' kolonne funnet i trafikkdata.")
     else:
@@ -441,7 +433,7 @@ with tabs[4]:
     st.markdown("Estimerte omsetningstall for hovedkonkurrentene i 2024. Dette hjelper med å vurdere vår markedsposisjon.")
 
 # ----------------------------
-# I FANE 6 – Bedriftsråd (Oppsummering)
+#  FANE 6 – Bedriftsråd (Oppsummering)
 with tabs[5]:
     st.header("Optimale produktpriser")
     st.markdown("""

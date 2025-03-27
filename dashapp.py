@@ -448,11 +448,11 @@ with tabs[5]:
     Her kan bedriften få innsikt i optimal produktpriser basert på egne data og ønskede marginer.
     """)
                 
-✅ Optimaliser lagerstyring: Juster vareinnkjøp etter faktisk etterspørsel.  
-✅ Reduser kostnader: Forhandle med leverandører og effektiviser interne prosesser.  
-✅ Forbedre markedsføring: Følg SEO-strategien og publiser jevnlig i SoMe-kanaler.  
-✅ Øk konverteringsrate: Optimaliser brukeropplevelsen på nettsiden.  
-✅ Overvåk jevnlig: Følg nøkkeltall og handle raskt ved budsjettavvik.
+ Optimaliser lagerstyring: Juster vareinnkjøp etter faktisk etterspørsel.  
+ Reduser kostnader: Forhandle med leverandører og effektiviser interne prosesser.  
+ Forbedre markedsføring: Følg SEO-strategien og publiser jevnlig i SoMe-kanaler.  
+ Øk konverteringsrate: Optimaliser brukeropplevelsen på nettsiden.  
+ Overvåk jevnlig: Følg nøkkeltall og handle raskt ved budsjettavvik.
     """)
 
      
@@ -569,19 +569,21 @@ Dataene er basert på standarddata fra LuxusHair og oppdateres når egne priser 
     st.markdown("""
     )
 # ----------------------------
-# FANE 7 – Verdivurdering
-with tabs[6]:
-    with tabs[6]:
-    st.header("Bedriftsråd & Verdivurdering")
+# FANE 7 – Verdivurdering & Bedriftsråd
+# ----------------------------
+    st.header("Verdivurdering & Bedriftsråd")
     st.markdown("""
-    Her oppsummeres bedriftsråd, samt nøkkeltall knyttet til optimal budsjettering og produktprising.
-     Optimaliser lagerstyring: Juster vareinnkjøp etter faktisk etterspørsel.  
-     Reduser kostnader: Forhandle med leverandører og effektiviser interne prosesser.  
-     Forbedre markedsføring: Følg SEO-strategien og publiser jevnlig i SoMe-kanaler.  
-     Øk konverteringsrate: Optimaliser brukeropplevelsen på nettsiden.  
-     Overvåk jevnlig: Følg nøkkeltall og handle raskt ved budsjettavvik.
-    """)           
-      ebitda = 755000
+    Her oppsummeres bedriftsråd, samt en en enkel verdivurdering.
+                
+    - Optimaliser lagerstyring: Juster vareinnkjøp etter faktisk etterspørsel.  
+    - Reduser kostnader: Forhandle med leverandører og effektiviser interne prosesser.  
+    - Forbedre markedsføring: Følg SEO-strategien og publiser jevnlig i SoMe-kanaler.  
+    - Øk konverteringsrate: Optimaliser brukeropplevelsen på nettsiden.  
+    - Overvåk jevnlig: Følg nøkkeltall og handle raskt ved budsjettavvik.
+    """)
+
+    st.header("Verdivurdering")
+    ebitda = 755000
     try:
         cost_data = pd.read_csv("./standardized_cost.csv")
         if "driftsresultat" in cost_data.columns:

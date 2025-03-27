@@ -109,6 +109,12 @@ if "Produktnavn" in product_sales_df.columns:
     product_sales_df.rename(columns={"Produktnavn": "product_name"}, inplace=True)
 if "SKU" in product_sales_df.columns:
     product_sales_df.rename(columns={"SKU": "sku"}, inplace=True)
+    
+# Definer globale variabler i session_state
+if "total_cost" not in st.session_state:
+    st.session_state["total_cost"] = None
+if "optimal_revenue" not in st.session_state:
+    st.session_state["optimal_revenue"] = None
 
 # ----------------------------
 # 3. Navigasjon / Tabs
@@ -176,23 +182,6 @@ Last ned eksempelfilene, og erstatt med egne data. Følg nøyaktig samme struktu
         st.plotly_chart(fig, use_container_width=True, key="fig_sales_monthly")
         
     st.markdown("**Merk:** Dataene kan filtreres både på daglig og månedlig basis.")
-    
-# Definer globale variabler
-if "total_cost" not in st.session_state:
-    st.session_state["total_cost"] = None
-if "optimal_revenue" not in st.session_state:
-    st.session_state["optimal_revenue"] = None
-
-# Oppdater verdiene i Fane 2
-with tabs[1]:
-    # Beregn total_cost og optimal_revenue
-    st.session_state["total_cost"] = total_cost
-    st.session_state["optimal_revenue"] = optimal_revenue
-
-# Bruk verdiene i Fane 6
-with tabs[5]:
-    total_cost = st.session_state["total_cost"]
-    optimal_revenue = st.session_state["optimal_revenue"]
 # ----------------------------
 # FANE 2 – Kostnadsanalyse & Budsjett
 # ----------------------------
@@ -200,39 +189,26 @@ with tabs[1]:
     st.header("Kostnadsanalyse & Budsjett")
     st.markdown("**Kostnadsdata for hele 2024**")
     st.write(cost_df)
-    cost_columns = [col for col in ["varekostnad", "driftskostnader", "finansielle_kostnader", "lønnskostnad", "totale_kostnader"] if col in cost_df.columns]
-    if cost_columns:
-        fig_cost = px.bar(cost_df, x="date", y=cost_columns, 
-                          title="Kostnader per måned",
-                          barmode="group",
-                          labels={"value": "Kostnader (kr)", "variable": "Kostnadstype"})
-        st.plotly_chart(fig_cost, use_container_width=True, key="fig_cost_chart")
-    else:
-        st.error("Ingen kostnadskolonner funnet for å lage diagram.")
-    st.markdown("#### Kostnadstall per kategori:")
-    for col in cost_columns:
-        if col in cost_df.columns:
-            total = cost_df[col].sum()
-            st.markdown(f"- **{col.capitalize()}**: {total:,.0f} kr")
+
+    # Beregn total kostnad og optimal budsjettert omsetning
     selected_margin = st.number_input("Angi ønsket fortjenestemargin (%)", min_value=0.0, max_value=100.0, 
                                       value=30.0, step=1.0, key="margin_kostnad")
     margin = selected_margin / 100.0
+
     if "totale_kostnader" in cost_df.columns:
         total_cost = cost_df["totale_kostnader"].iloc[0]
     else:
         total_cost = sum(cost_df[col].sum() for col in cost_columns)
+
     optimal_revenue = total_cost / (1 - margin)
-    
+
+    # Lagre verdiene i session state
+    st.session_state["total_cost"] = total_cost
+    st.session_state["optimal_revenue"] = optimal_revenue
+
+    # Vis verdiene
     st.markdown(f"**Total kostnad:** {total_cost:,.0f} kr")
     st.markdown(f"**Optimal budsjettert omsetning:** {optimal_revenue:,.0f} kr")
-    st.markdown(f"""
-**Forklaring:**  
-Her brukes en fortjenestemargin på {selected_margin:.0f}% (desimalverdi {margin}) for å beregne optimal budsjettert omsetning.  
-Formelen er:  
-  Total kostnad / (1 – margin)  
-Altså, dersom de totale kostnadene er {total_cost:,.0f} kr,  
-må omsetningen være minst {optimal_revenue:,.0f} kr for å oppnå ønsket fortjeneste.
-    """)
 # ----------------------------
 # FANE 3 – Lagerinnsikt & Innkjøpsstrategi (Filtrering på produktnavn og lengde)
 # ----------------------------

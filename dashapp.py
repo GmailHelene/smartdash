@@ -322,7 +322,7 @@ with tabs[2]:
 
     
     
-st.markdown(f"**Total kostnad for anbefalt innkjøp:** {total_cost:,.0f} kr")
+    st.markdown(f"**Total kostnad for anbefalt innkjøp:** {total_cost:,.0f} kr")
 
 # FANE 4 – Digital Analyse & SEO
 # ----------------------------

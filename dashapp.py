@@ -443,10 +443,14 @@ with tabs[4]:
 # ----------------------------
 with tabs[4]:
     st.header("Optimale produktpriser")
+    st.markdown("""
+    Her kan bedriften få innsikt i optimal produktpriser basert på egne data og ønskede marginer.
+    """)
+
     st.markdown("### Optimale produktpriser & Optimal budsjettering")
     st.markdown("""
-    # Her beregnes optimal utsalgspris basert på reelle innkjøpspriser (LuxusHair sine fallback-priser brukes dersom ingen fil er lastet opp).  
-        Du kan angi fortjenestemargin og overhead, og den resulterende utsalgsprisen vil synes, inkl mva.
+    Her beregnes optimal utsalgspris basert på reelle innkjøpspriser (LuxusHair sine fallback-priser brukes dersom ingen fil er lastet opp).  
+    Du kan angi fortjenestemargin og overhead, og den resulterende utsalgsprisen vil synes, inkl mva.  
     Velg hvilket hovedprodukt du vil se optimalisert utsalgspris til ved å bruke dropdownen nedenfor.
     """)
 
@@ -506,6 +510,17 @@ with tabs[4]:
         step=1.0, 
         key="overhead_bedrads_tab6"
     ) / 100.0
+
+    st.markdown(
+        """
+    **Forklaring - Optimal utsalgspris:**  
+    Optimal utsalgspris beregnes slik:  
+    ((Innkjøpspris * (1 + overhead)) / (1 - fortjenestemargin))  
+    Her brukes en overhead på {0:.0f}% og en fortjenestemargin på {1:.0f}%.  
+    Utsalgsprisen inkluderer merverdiavgift.
+    Velg hovedprodukt du ønsker se anbefalt utsalgspris for i dropdownen over.
+        """.format(user_overhead_tab6 * 100, user_margin_tab6 * 100)
+    )
 
     # Hent fallback-innkjøpspris for det valgte hovedproduktet og beregn optimal pris
     fallback_price = purchase_prices.get(normalized_main_product, None)

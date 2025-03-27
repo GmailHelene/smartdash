@@ -443,9 +443,10 @@ with tabs[4]:
 # ----------------------------
 # I FANE 6 – Bedriftsråd (Oppsummering)
 with tabs[5]:
-    st.header("Optimale produktpriser)")
+    st.header("Optimale produktpriser")
     st.markdown("""
-Her kan bedriften få innsikt i optimal produktpriser basert på egne data og ønskede marginer.
+    Her kan bedriften få innsikt i optimal produktpriser basert på egne data og ønskede marginer.
+    """)
                 
 ✅ Optimaliser lagerstyring: Juster vareinnkjøp etter faktisk etterspørsel.  
 ✅ Reduser kostnader: Forhandle med leverandører og effektiviser interne prosesser.  
@@ -454,13 +455,14 @@ Her kan bedriften få innsikt i optimal produktpriser basert på egne data og ø
 ✅ Overvåk jevnlig: Følg nøkkeltall og handle raskt ved budsjettavvik.
     """)
 
+     
     st.markdown("### Optimale produktpriser & Optimal budsjettering")
     st.markdown("""
-Her beregnes optimal utsalgspris basert på reelle innkjøpspriser (LuxusHair sine fallback-priser brukes dersom ingen fil er lastet opp).  
-Du kan angi fortjenestemargin og overhead, og den resulterende utsalgsprisen vises (inkludert mva.).  
-Velg hvilket hovedprodukt du vil se optimal utsalgspris for ved å bruke dropdownen nedenfor.
+    Her beregnes optimal utsalgspris basert på reelle innkjøpspriser (LuxusHair sine fallback-priser brukes dersom ingen fil er lastet opp).  
+    Du kan angi fortjenestemargin og overhead, og den resulterende utsalgsprisen vises (inkludert mva.).  
+    Velg hvilket hovedprodukt du vil se optimal utsalgspris for ved å bruke dropdownen nedenfor.
     """)
-    
+
     # Last inn innkjøpspriser (bruk standarddata hvis ingen fil er lastet opp)
     if uploaded_prices is not None:
         df_prices = pd.read_csv(uploaded_prices)
@@ -569,8 +571,17 @@ Dataene er basert på standarddata fra LuxusHair og oppdateres når egne priser 
 # ----------------------------
 # FANE 7 – Verdivurdering
 with tabs[6]:
-    st.header("Verdivurdering")
-    ebitda = 755000
+    with tabs[6]:
+    st.header("Bedriftsråd & Verdivurdering")
+    st.markdown("""
+    Her oppsummeres bedriftsråd, samt nøkkeltall knyttet til optimal budsjettering og produktprising.
+    ✅ Optimaliser lagerstyring: Juster vareinnkjøp etter faktisk etterspørsel.  
+    ✅ Reduser kostnader: Forhandle med leverandører og effektiviser interne prosesser.  
+    ✅ Forbedre markedsføring: Følg SEO-strategien og publiser jevnlig i SoMe-kanaler.  
+    ✅ Øk konverteringsrate: Optimaliser brukeropplevelsen på nettsiden.  
+    ✅ Overvåk jevnlig: Følg nøkkeltall og handle raskt ved budsjettavvik.
+    """)           
+      ebitda = 755000
     try:
         cost_data = pd.read_csv("./standardized_cost.csv")
         if "driftsresultat" in cost_data.columns:

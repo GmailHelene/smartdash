@@ -381,7 +381,7 @@ with tabs[3]:
  Meta-tittel forslag: "LuxusHair  Eksklusive Hårbehandlinger og Premium Extensions"  
  Meta-beskrivelse forslag: "Opplev luksus med våre profesjonelle hårbehandlinger. Bestill nå for en eksklusiv hårtransformation!"  
  Annonseringsstrategi: Google Ads, Facebook Ads, Instagram Ads, YouTube, Pinterest  
- Postingsplan: Instagram (3til4 innlegg/uke), Facebook (2til3 innlegg/uke), YouTube (1 video/uke), Blogg (2til3 innlegg/måned), Pinterest (daglige pins)
+ Postingsplan: Instagram; 3 til 4 innlegg/uke, Facebook; 2 til 3 innlegg/uke, YouTube; 1 video/uke), Blogg; 2 til 3 innlegg/måned, Pinterest; daglige pins
     """, unsafe_allow_html=True)
 
     if "date" not in traffic_df.columns:

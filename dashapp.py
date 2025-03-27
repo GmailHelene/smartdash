@@ -437,7 +437,6 @@ with tabs[4]:
     fig_comp = px.bar(competitor_data, x="Firma", y="Omsetning", title="Konkurrentanalyse")
     st.plotly_chart(fig_comp, use_container_width=True, key="fig_comp_chart")
     st.markdown("Estimerte omsetningstall for hovedkonkurrentene i 2024. Dette hjelper med å vurdere vår markedsposisjon.")
-
 # ----------------------------
 # FANE 6 – Optimale produktpriser
 # ----------------------------

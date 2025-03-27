@@ -290,7 +290,6 @@ with tabs[2]:
         total_cost += row["Anbefalt innkjøp"] * purchase_price
 
     st.markdown(f"**Total kostnad for anbefalt innkjøp:** {total_cost:,.0f} kr")
-    for index, row in df_sorted.iterrows():
     st.markdown(f"- **{row['sku']}**: Anbefalt innkjøp {row['Anbefalt innkjøp']} enheter")
     st.markdown(f"**Total kostnad for anbefalt innkjøp:** {total_cost:,.0f} kr")
 

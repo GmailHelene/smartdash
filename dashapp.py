@@ -400,7 +400,14 @@ with tabs[3]:
         fig_traffic = px.bar(seo_agg, x="søkeord", y="antallvisninger",
                              title="Topp søkeord (visninger)", template="plotly_white")
         st.plotly_chart(fig_traffic, use_container_width=True, key="fig_traffic_chart_seo")
-        st.markdown("""
+    st.markdown("""
+    **SEO-ekspertise og annonseplan:**  
+    - Beste Keywords: luxushair behandling, premium extensions, keratin behandling  
+    - Meta-tittel forslag: "LuxusHair – Eksklusive Hårbehandlinger og Premium Extensions"  
+    - Meta-beskrivelse forslag: "Opplev luksus med våre profesjonelle hårbehandlinger. Bestill nå for en eksklusiv hårtransformation!"  
+    - Annonseringsstrategi: Google Ads, Facebook Ads, Instagram Ads, YouTube, Pinterest  
+    - Postingsplan: Instagram (3–4 innlegg/uke), Facebook (2–3 innlegg/uke), YouTube (1 video/uke), Blogg (2–3 innlegg/måned), Pinterest (daglige pins)
+    """, unsafe_allow_html=True)
 # Konkurrentanalyse section
 st.header("Konkurrentanalyse")
 """competitor_data = pd.DataFrame({

@@ -286,7 +286,7 @@ with tabs[2]:
         total_cost += row["Anbefalt innkjøp"] * purchase_price
         st.markdown(f"- **{row['sku']}**: Anbefalt innkjøp {row['Anbefalt innkjøp']} enheter")
 
-        st.markdown(f"**Total kostnad for anbefalt innkjøp:** {total_cost:,.0f} kr")
+    st.markdown(f"**Total kostnad for anbefalt innkjøp:** {total_cost:,.0f} kr")
 
         # Begrens antall rader i diagrammet til maks 25
         df_chart = df_sorted.head(25)

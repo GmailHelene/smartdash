@@ -227,7 +227,7 @@ with tabs[2]:
     selected_product = st.selectbox(
         "Velg produktnavn",
         options=["Alle"] + sorted(product_sales_df["product_name"].dropna().unique()),
-        index=1,  # Sett "Clip On Extension Virgin" som standard
+        index=1,  # Sett "Clip On Extensions Virgin" som standard
         key="product_name_filter"
     )
 
@@ -307,7 +307,6 @@ with tabs[2]:
             df_sorted[["sku", "product_name", "antallsolgt"]].head(40),
             height=800  # Juster høyden for å vise 40 rader uten scrolling
         )
-    
     # Seksjon for lagerinnkjøp og anbefalinger
     st.markdown("### Lagerinnkjøp og anbefalinger")
     st.markdown("""

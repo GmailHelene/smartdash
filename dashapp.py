@@ -505,7 +505,6 @@ else:
       Total kostnad / (1 – margin)  
     Altså, dersom de totale kostnadene er {total_cost:,.0f} kr,  
     må omsetningen være minst {optimal_revenue:,.0f} kr for å oppnå ønsket fortjeneste.
-    """)
 else:
     st.info("Kostnadsdata utilgjengelig for beregning av optimal budsjettert omsetning.")
 

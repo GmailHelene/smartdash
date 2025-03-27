@@ -115,7 +115,6 @@ if "total_cost" not in st.session_state:
     st.session_state["total_cost"] = None
 if "optimal_revenue" not in st.session_state:
     st.session_state["optimal_revenue"] = None
-
 # ----------------------------
 # 3. Navigasjon / Tabs
 # ----------------------------
@@ -184,31 +183,50 @@ Last ned eksempelfilene, og erstatt med egne data. Følg nøyaktig samme struktu
     st.markdown("**Merk:** Dataene kan filtreres både på daglig og månedlig basis.")
 # ----------------------------
 # FANE 2 – Kostnadsanalyse & Budsjett
-# ----------------------------
 with tabs[1]:
     st.header("Kostnadsanalyse & Budsjett")
     st.markdown("**Kostnadsdata for hele 2024**")
     st.write(cost_df)
 
-    # Beregn total kostnad og optimal budsjettert omsetning
-    selected_margin = st.number_input("Angi ønsket fortjenestemargin (%)", min_value=0.0, max_value=100.0, 
-                                      value=30.0, step=1.0, key="margin_kostnad")
-    margin = selected_margin / 100.0
-
+    # Beregn total kostnad
+    cost_columns = [col for col in ["varekostnad", "driftskostnader", "finansielle_kostnader", "lønnskostnad", "totale_kostnader"] if col in cost_df.columns]
     if "totale_kostnader" in cost_df.columns:
-        total_cost = cost_df["totale_kostnader"].iloc[0]
+        total_cost = cost_df["totale_kostnader"].sum()
     else:
         total_cost = sum(cost_df[col].sum() for col in cost_columns)
 
-    optimal_revenue = total_cost / (1 - margin)
-
-    # Lagre verdiene i session state
+    # Lagre total_cost i session_state
     st.session_state["total_cost"] = total_cost
+
+    # Beregn optimal budsjettert omsetning
+    selected_margin = st.number_input("Angi ønsket fortjenestemargin (%)", min_value=0.0, max_value=100.0, value=30.0, step=1.0, key="margin_kostnad")
+    margin = selected_margin / 100.0
+    optimal_revenue = total_cost / (1 - margin)
     st.session_state["optimal_revenue"] = optimal_revenue
 
-    # Vis verdiene
+    # Vis total kostnad og optimal budsjettert omsetning
     st.markdown(f"**Total kostnad:** {total_cost:,.0f} kr")
     st.markdown(f"**Optimal budsjettert omsetning:** {optimal_revenue:,.0f} kr")
+
+    # Forklaring
+    st.markdown(f"""
+    **Forklaring:**  
+    Her brukes en fortjenestemargin på {selected_margin:.0f}% (desimalverdi {margin}) for å beregne optimal budsjettert omsetning.  
+    Formelen er:  
+      Total kostnad / (1 – margin)  
+    Altså, dersom de totale kostnadene er {total_cost:,.0f} kr,  
+    må omsetningen være minst {optimal_revenue:,.0f} kr for å oppnå ønsket fortjeneste.
+    """)
+
+    # Generer stolpediagram for kostnadsdata
+    if cost_columns:
+        fig_cost = px.bar(cost_df, x="date", y=cost_columns, 
+                          title="Kostnader per måned",
+                          barmode="group",
+                          labels={"value": "Kostnader (kr)", "variable": "Kostnadstype"})
+        st.plotly_chart(fig_cost, use_container_width=True)
+    else:
+        st.error("Ingen kostnadskolonner funnet for å lage diagram.")
 # ----------------------------
 # FANE 3 – Lagerinnsikt & Innkjøpsstrategi (Filtrering på produktnavn og lengde)
 # ----------------------------
@@ -267,16 +285,16 @@ with tabs[2]:
         # Beregn "Anbefalt innkjøp"
         df_sorted["Anbefalt innkjøp"] = (df_sorted["antallsolgt"] / 4).apply(lambda x: max(1, round(x)))
 
-        # Beregn total kostnad for anbefalt innkjøp
-        total_cost = 0
-        st.markdown("### Anbefalt innkjøpsstrategi")
-        st.markdown("Her er en oversikt over anbefalte innkjøp basert på salgsdata av valgt hovedprodukt i filtreringen over:")
+       # Beregn total kostnad for anbefalt innkjøp
+    if not df.empty:
+        df_sorted = df.sort_values(by="antallsolgt", ascending=False)
+        df_sorted["antallsolgt"] = df_sorted["antallsolgt"].fillna(0)
+        df_sorted["Anbefalt innkjøp"] = (df_sorted["antallsolgt"] / 4).apply(lambda x: max(1, round(x)))
 
+        total_cost = 0
         for index, row in df_sorted.iterrows():
-            # Anta en standard innkjøpspris for hver SKU (kan tilpasses)
             purchase_price = 300  # Eksempel: 300 kr per enhet
             total_cost += row["Anbefalt innkjøp"] * purchase_price
-            st.markdown(f"- **{row['sku']}**: Anbefalt innkjøp {row['Anbefalt innkjøp']} enheter")
 
         st.markdown(f"**Total kostnad for anbefalt innkjøp:** {total_cost:,.0f} kr")
 
@@ -471,12 +489,15 @@ else:
     )
 
 # Beregn og vis optimal budsjettert omsetning
-if total_cost is not None:
-    st.markdown("### Optimal budsjettert omsetning")
-    optimal_revenue = total_cost / (1 - user_margin_tab6)
-    st.markdown(f"""
-    **Total kostnad:** {total_cost:,.0f} kr  
-    **Optimal budsjettert omsetning:** {optimal_revenue:,.0f} kr  
+# Hent verdier fra session_state
+    total_cost = st.session_state.get("total_cost")
+    optimal_revenue = st.session_state.get("optimal_revenue")
+
+    if total_cost is not None and optimal_revenue is not None:
+        st.markdown(f"**Total kostnad:** {total_cost:,.0f} kr")
+        st.markdown(f"**Optimal budsjettert omsetning:** {optimal_revenue:,.0f} kr")
+    else:
+        st.info("Kostnadsdata utilgjengelig for beregning av optimal budsjettert omsetning.")  
 
     **Forklaring:**  
     Her brukes en fortjenestemargin på {user_margin_tab6 * 100:.0f}% (desimalverdi {user_margin_tab6}) for å beregne optimal budsjettert omsetning.  

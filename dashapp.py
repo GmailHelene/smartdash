@@ -37,7 +37,6 @@ st.set_page_config(
     page_icon="🚀"  # eks. et alternativt emoji-ikon
 )
 # Legg til CSS for å gjøre fanene scrollbare
- st.markdown("""
      <style>
      /* Gjør fanene scrollbare */
      div[data-testid="stTabs"] > div {

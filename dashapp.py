@@ -227,7 +227,7 @@ with tabs[2]:
     selected_product = st.selectbox(
         "Velg produktnavn",
         options=["Alle"] + sorted(product_sales_df["product_name"].dropna().unique()),
-        index=1,  # Sett "Clip On Extension Virgin" som standard (juster indeksen hvis nødvendig)
+        index=1,  # Sett "Clip On Extensions Virgin" som standard
         key="product_name_filter"
     )
 
@@ -273,19 +273,18 @@ with tabs[2]:
         # Beregn "Anbefalt innkjøp"
         df_sorted["Anbefalt innkjøp"] = (df_sorted["antallsolgt"] / 4).apply(lambda x: max(1, round(x)))
 
-        with tabs[2]:
         # Beregn total kostnad for anbefalt innkjøp
         total_cost = 0
         st.markdown("### Anbefalt innkjøpsstrategi")
         st.markdown("Her er en oversikt over anbefalte innkjøp basert på salgsdata av valgt hovedprodukt i filtreringen over:")
 
-    for index, row in df_sorted.iterrows():
-        # Anta en standard innkjøpspris for hver SKU (kan tilpasses)
-        purchase_price = 300  # Eksempel: 300 kr per enhet
-        total_cost += row["Anbefalt innkjøp"] * purchase_price
-        st.markdown(f"- **{row['sku']}**: Anbefalt innkjøp {row['Anbefalt innkjøp']} enheter")
+        for index, row in df_sorted.iterrows():
+            # Anta en standard innkjøpspris for hver SKU (kan tilpasses)
+            purchase_price = 300  # Eksempel: 300 kr per enhet
+            total_cost += row["Anbefalt innkjøp"] * purchase_price
+            st.markdown(f"- **{row['sku']}**: Anbefalt innkjøp {row['Anbefalt innkjøp']} enheter")
 
-    st.markdown(f"**Total kostnad for anbefalt innkjøp:** {total_cost:,.0f} kr")
+        st.markdown(f"**Total kostnad for anbefalt innkjøp:** {total_cost:,.0f} kr")
 
         # Begrens antall rader i diagrammet til maks 25
         df_chart = df_sorted.head(25)
@@ -308,7 +307,6 @@ with tabs[2]:
             df_sorted[["sku", "product_name", "antallsolgt"]].head(40),
             height=800  # Juster høyden for å vise 40 rader uten scrolling
         )
-    
     # Seksjon for lagerinnkjøp og anbefalinger
     st.markdown("### Lagerinnkjøp og anbefalinger")
     st.markdown("""

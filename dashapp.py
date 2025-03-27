@@ -505,14 +505,14 @@ with tabs[4]:
     ) / 100.0
 
     st.markdown(
-    """
- **Forklaring - Optimal utsalgspris:**  
- Optimal utsalgspris beregnes slik:  
- ((Innkjøpspris * (1 + overhead)) / (1 - fortjenestemargin))  
- Her brukes en overhead på {0:.0f}% og en fortjenestemargin på {1:.0f}%.  
- Utsalgsprisen inkluderer merverdiavgift.
- Velg hovedprodukt du ønsker se anbefalt utsalgspris for i dropdownen over.
-    """.format(user_overhead_tab6 * 100, user_margin_tab6 * 100)
+         """
+    **Forklaring - Optimal utsalgspris:**  
+    Optimal utsalgspris beregnes slik:  
+    ((Innkjøpspris * (1 + overhead)) / (1 - fortjenestemargin))  
+    Her brukes en overhead på {0:.0f}% og en fortjenestemargin på {1:.0f}%.  
+    Utsalgsprisen inkluderer merverdiavgift.
+    Velg hovedprodukt du ønsker se anbefalt utsalgspris for i dropdownen over.
+        """.format(user_overhead_tab6 * 100, user_margin_tab6 * 100)
 )
 
     # Hent fallback-innkjøpspris for det valgte hovedproduktet og beregn optimal pris

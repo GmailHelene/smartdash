@@ -411,7 +411,7 @@ fig_comp = px.bar(competitor_data, x="Firma", y="Omsetning", title="Konkurrentan
 st.plotly_chart(fig_comp, use_container_width=True, key="fig_comp_chart_konkurrent")
 
         "Omsetning": [6600000, 4300000, 2900000, 3500000]
-    })
+    )
    fig_comp = px.bar(competitor_data, x="Firma", y="Omsetning", title="Konkurrentanalyse")
    st.plotly_chart(fig_comp, use_container_width=True, key="fig_comp_chart_konkurrent")
 

@@ -433,9 +433,9 @@ with tabs[4]:
 # ----------------------------
 # I FANE 6 – Bedriftsråd (Oppsummering)
 with tabs[5]:
-    st.header("Bedriftsråd (Oppsummering)")
+    st.header("Optimale produktpriser)")
     st.markdown("""
-Her oppsummeres bedriftsråd, samt nøkkeltall knyttet til optimal budsjettering og produktprising.
+Her kan bedriften få innsikt i optimal produktpriser basert på egne data og ønskede marginer.
                 
 ✅ Optimaliser lagerstyring: Juster vareinnkjøp etter faktisk etterspørsel.  
 ✅ Reduser kostnader: Forhandle med leverandører og effektiviser interne prosesser.  

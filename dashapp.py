@@ -558,8 +558,7 @@ with tabs[5]:
 
     st.markdown(
     f"""
-**Verdivurdering – Forklaring:**
-
+**Verdivurdering;Forklaring:**
 - EBITDA: {ebitda:,} kr  
 - EBITDA x 8 = {ebitda * 8:,} kr  
 - DCF x 11 = {ebitda * 11:,} kr  

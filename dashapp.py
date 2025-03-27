@@ -248,18 +248,18 @@ with tabs[2]:
     st.header("Lagerinnsikt & Innkjøpsstrategi (Filtrering på produktnavn og lengde)")
 
     # Velg produktnavn med standardverdi
-    selected_product = st.selectbox(
-        "Velg produktnavn",
-        options=["Alle"] + sorted(product_sales_df["product_name"].dropna().unique()),
-        index=0,  # "Alle" som standard
+    selected_products = st.multiselect(
+        "Velg produktnavn (opptil 3)",
+        options=sorted(product_sales_df["product_name"].dropna().unique()),
+        default=["Clip On", "Keratin", "Tape Extensions"],
         key="product_name_filter"
     )
 
     # Velg lengde med standardverdi
-    selected_length = st.selectbox(
-        "Velg lengde (cm)", 
-        options=["Alle", "Tom", "40 cm", "50 cm", "55 cm", "60 cm"], 
-        index=0,  # "Alle" som standard
+    selected_lengths = st.multiselect(
+        "Velg lengde (cm)",
+        options=["40 cm", "50 cm", "55 cm", "60 cm"],
+        default=["40 cm", "50 cm", "55 cm"],
         key="length_filter"
     )
 
@@ -272,53 +272,49 @@ with tabs[2]:
            (product_sales_df["date"] <= pd.to_datetime(inv_end_date))
     df = product_sales_df.loc[mask].copy()
 
-    # Filtrer data for valgt produktnavn (hvis ikke "Alle")
-    if selected_product != "Alle":
-        df = df[df["product_name"] == selected_product]
+    # Filtrer data for valgte produktnavn (hvis noen er valgt)
+    if selected_products:
+        df = df[df["product_name"].isin(selected_products)]
 
-    # Filtrer data for valgt lengde
-    if selected_length != "Alle":
-        if selected_length == "Tom":
-            df = df[~df["sku"].str.contains(r"\d+\s*cm", na=False, case=False)]
-        else:
-            pattern = re.compile(rf"\b{re.escape(selected_length.strip())}\b", re.IGNORECASE)
-            df = df[df["sku"].str.contains(pattern, na=False)]
+    # Filtrer data for valgte lengder (hvis noen er valgt)
+    if selected_lengths:
+        pattern = re.compile(rf"\b({'|'.join([re.escape(length.strip()) for length in selected_lengths])})\b", re.IGNORECASE)
+        df = df[df["sku"].str.contains(pattern, na=False)]
 
     # Sjekk om df er tom
     if df.empty:
         st.error("Ingen data tilgjengelig for de valgte filtrene.")
     else:
-    # Sorter data etter ønsket kolonne (f.eks. "antallsolgt")
+        # Sorter data etter ønsket kolonne (f.eks. "antallsolgt")
         df_sorted = df.sort_values(by="antallsolgt", ascending=False)
 
-    # Fyll inn NaN-verdier i "antallsolgt" med 0
+        # Fyll inn NaN-verdier i "antallsolgt" med 0
         df_sorted["antallsolgt"] = df_sorted["antallsolgt"].fillna(0)
 
-    # Beregn "Anbefalt innkjøp"
+        # Beregn "Anbefalt innkjøp"
         df_sorted["Anbefalt innkjøp"] = (df_sorted["antallsolgt"] / 4).apply(lambda x: max(1, round(x)))
 
-    # Beregn total kostnad for anbefalt innkjøp
+        # Beregn total kostnad for anbefalt innkjøp
         total_cost = 0
         st.markdown("### Anbefalt innkjøpsstrategi")
         st.markdown("Her er en oversikt over anbefalte innkjøp basert på salgsdata av valgt hovedprodukt i filtreringen over:")
 
         for index, row in df_sorted.iterrows():
-    # Anta en standard innkjøpspris for hver SKU (kan tilpasses)
+            # Anta en standard innkjøpspris for hver SKU (kan tilpasses)
             purchase_price = 300  # Eksempel: 300 kr per enhet
             total_cost += row["Anbefalt innkjøp"] * purchase_price
             st.markdown(f"- **{row['sku']}**: Anbefalt innkjøp {row['Anbefalt innkjøp']} enheter")
 
         st.markdown(f"**Total kostnad for anbefalt innkjøp:** {total_cost:,.0f} kr")
 
-
-    # Begrens antall rader i diagrammet til maks 25
+        # Begrens antall rader i diagrammet til maks 25
         df_chart = df_sorted.head(25)
 
-    # Visualisering – stolpediagram med Plotly dark-tema (blå/mørkt diagram)
+        # Visualisering – stolpediagram med Plotly dark-tema (blå/mørkt diagram)
         fig = px.bar(
-            df_chart, 
-            x="sku", 
-            y="antallsolgt", 
+            df_chart,
+            x="sku",
+            y="antallsolgt",
             title=f"Antall solgt for valgt produkt og lengde",
             hover_data=["product_name", "sku"],
             template="plotly_dark"
@@ -327,7 +323,7 @@ with tabs[2]:
         st.plotly_chart(fig, use_container_width=True)
         st.markdown("**Filtrerte SKU-er sortert etter antall solgt:**")
 
-    # Oppdatert tabellvisning (vis 40 rader uten scrolling, skjul første kolonne)
+        # Oppdatert tabellvisning (vis 40 rader uten scrolling, skjul første kolonne)
         st.dataframe(
             df_sorted[["sku", "product_name", "antallsolgt"]].head(40),
             height=800  # Juster høyden for å vise 40 rader uten scrolling
@@ -379,6 +375,48 @@ Dette er LuxusHair sin Analytics-integrasjon – standarddata benyttes, men denn
 - Postingsplan: Instagram (3–4 innlegg/uke), Facebook (2–3 innlegg/uke), YouTube (1 video/uke), Blogg (2–3 innlegg/måned), Pinterest (daglige pins)
     """, unsafe_allow_html=True)
 
+# Combine "Konkurrentanalyse" with "Digital Analyse & SEO"
+with tabs[3]:
+    st.header("SEO & Konkurrentanalyse")
+    st.markdown("""
+    **LuxusHair Analytics Integrasjon**  
+    Dette er LuxusHair sin Analytics-integrasjon – standarddata benyttes, men denne løsningen kan custom-integreres for den enkelte bedrift.
+    """)
+    if "date" not in traffic_df.columns:
+        st.error("Ingen 'date' kolonne funnet i trafikkdata.")
+    else:
+        if traffic_df.empty:
+            traffic_df = pd.DataFrame({
+                "søkeord": ["luxushair behandling", "premium extensions", "keratin behandling"],
+                "antallvisninger": [1000, 800, 600]
+            })
+        seo_agg = traffic_df.groupby("søkeord", as_index=False)["antallvisninger"].sum()
+        seo_agg = seo_agg.sort_values(by="antallvisninger", ascending=False).head(35)
+        st.markdown("#### Top 35 søkeord (sortert fra høy til lav visning):")
+        st.table(seo_agg)
+        fig_traffic = px.bar(seo_agg, x="søkeord", y="antallvisninger",
+                             title="Topp søkeord (visninger)", template="plotly_white")
+        st.plotly_chart(fig_traffic, use_container_width=True, key="fig_traffic_chart")
+    st.markdown("""
+    **SEO-ekspertise og annonseplan:**  
+    - Beste Keywords: luxushair behandling, premium extensions, keratin behandling  
+    - Meta-tittel forslag: "LuxusHair – Eksklusive Hårbehandlinger og Premium Extensions"  
+    - Meta-beskrivelse forslag: "Opplev luksus med våre profesjonelle hårbehandlinger. Bestill nå for en eksklusiv hårtransformation!"  
+    - Annonseringsstrategi: Google Ads, Facebook Ads, Instagram Ads, YouTube, Pinterest  
+    - Postingsplan: Instagram (3–4 innlegg/uke), Facebook (2–3 innlegg/uke), YouTube (1 video/uke), Blogg (2–3 innlegg/måned), Pinterest (daglige pins)
+    """, unsafe_allow_html=True)
+
+    # Konkurrentanalyse section
+    st.header("Konkurrentanalyse")
+    competitor_data = pd.DataFrame({
+        "Firma": ["LuxusHair", "HairLux", "StylePro", "GlamourHair"],
+        "Omsetning": [6600000, 4300000, 2900000, 3500000]
+    })
+    fig_comp = px.bar(competitor_data, x="Firma", y="Omsetning", title="Konkurrentanalyse")
+    st.plotly_chart(fig_comp, use_container_width=True, key="fig_comp_chart")
+    st.markdown("Estimerte omsetningstall for hovedkonkurrentene i 2024. Dette hjelper med å vurdere vår markedsposisjon.")
+
+# Remove "Optimal budsjettert omsetning" section from "Bedriftsråd"
 # ----------------------------
 # FANE 5 – Konkurrentanalyse
 # ----------------------------

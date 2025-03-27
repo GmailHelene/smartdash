@@ -36,7 +36,7 @@ st.set_page_config(
     page_title="SmartDash",
     page_icon="🚀"  # eks. et alternativt emoji-ikon
 )
-    st.markdown("""
+st.markdown("""
 # Legg til CSS for å gjøre fanene scrollbare
      <style>
      /* Gjør fanene scrollbare */
@@ -288,22 +288,22 @@ with tabs[2]:
     if df.empty:
         st.error("Ingen data tilgjengelig for de valgte filtrene.")
     else:
-        # Sorter data etter ønsket kolonne (f.eks. "antallsolgt")
+    # Sorter data etter ønsket kolonne (f.eks. "antallsolgt")
         df_sorted = df.sort_values(by="antallsolgt", ascending=False)
 
-        # Fyll inn NaN-verdier i "antallsolgt" med 0
+    # Fyll inn NaN-verdier i "antallsolgt" med 0
         df_sorted["antallsolgt"] = df_sorted["antallsolgt"].fillna(0)
 
-        # Beregn "Anbefalt innkjøp"
+    # Beregn "Anbefalt innkjøp"
         df_sorted["Anbefalt innkjøp"] = (df_sorted["antallsolgt"] / 4).apply(lambda x: max(1, round(x)))
 
-        # Beregn total kostnad for anbefalt innkjøp
+    # Beregn total kostnad for anbefalt innkjøp
         total_cost = 0
         st.markdown("### Anbefalt innkjøpsstrategi")
         st.markdown("Her er en oversikt over anbefalte innkjøp basert på salgsdata av valgt hovedprodukt i filtreringen over:")
 
         for index, row in df_sorted.iterrows():
-            # Anta en standard innkjøpspris for hver SKU (kan tilpasses)
+    # Anta en standard innkjøpspris for hver SKU (kan tilpasses)
             purchase_price = 300  # Eksempel: 300 kr per enhet
             total_cost += row["Anbefalt innkjøp"] * purchase_price
             st.markdown(f"- **{row['sku']}**: Anbefalt innkjøp {row['Anbefalt innkjøp']} enheter")
@@ -311,10 +311,10 @@ with tabs[2]:
         st.markdown(f"**Total kostnad for anbefalt innkjøp:** {total_cost:,.0f} kr")
 
 
-        # Begrens antall rader i diagrammet til maks 25
+    # Begrens antall rader i diagrammet til maks 25
         df_chart = df_sorted.head(25)
 
-        # Visualisering – stolpediagram med Plotly dark-tema (blå/mørkt diagram)
+    # Visualisering – stolpediagram med Plotly dark-tema (blå/mørkt diagram)
         fig = px.bar(
             df_chart, 
             x="sku", 
@@ -327,7 +327,7 @@ with tabs[2]:
         st.plotly_chart(fig, use_container_width=True)
         st.markdown("**Filtrerte SKU-er sortert etter antall solgt:**")
 
-        # Oppdatert tabellvisning (vis 40 rader uten scrolling, skjul første kolonne)
+    # Oppdatert tabellvisning (vis 40 rader uten scrolling, skjul første kolonne)
         st.dataframe(
             df_sorted[["sku", "product_name", "antallsolgt"]].head(40),
             height=800  # Juster høyden for å vise 40 rader uten scrolling

@@ -306,7 +306,6 @@ with tabs[2]:
     
    # Beregn anbefalt innkjøp (4 ukers buffer)
    # Sørg for at "antallsolgt" kun inneholder numeriske verdier
-   df_sorted["antallsolgt"] = pd.to_numeric(df_sorted["antallsolgt"], errors="coerce").fillna(0)
 
     # Beregn "Anbefalt innkjøp"
     df_sorted["Anbefalt innkjøp"] = (df_sorted["antallsolgt"] / 4).apply(lambda x: max(1, round(x)))

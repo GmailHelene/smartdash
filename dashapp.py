@@ -538,8 +538,8 @@ with tabs[6]:
         "Bransjefaktoren, satt til 8 for EBITDA-metoden, er basert på historiske data og markedsforventninger. "
         "Faktoren reflekterer forhold som vekstpotensial, risiko og lønnsomhet."
     )
-    text = f"""
-    **Verdivurdering – Forklaring:**
+    st.markdown(f"""
+    **Verdivurdering  Forklaring:**
 
     - EBITDA: {ebitda:,.0f} kr  
     - EBITDA x 8 = {ebitda * 8:,.0f} kr  

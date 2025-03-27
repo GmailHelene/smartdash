@@ -13,7 +13,6 @@ from dash.dependencies import Output, Input
 from google.analytics.data_v1beta import BetaAnalyticsDataClient, RunReportRequest, Dimension, DateRange, Metric  # type: ignore
 import math
 from dash import no_update
-import dash_table
 
 # Hent innholdet fra Streamlit Secrets
 key_content = st.secrets["GOOGLE_APPLICATION_CREDENTIALS_CONTENT"]

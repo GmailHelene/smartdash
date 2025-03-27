@@ -255,9 +255,21 @@ with tabs[2]:
             pattern = re.compile(rf"\b{re.escape(selected_length.strip())}\b", re.IGNORECASE)
             df = df[df["sku"].str.contains(pattern, na=False)]
     
-    # Sorter data etter antall solgt
-    df_sorted = df.sort_values(by=["antallsolgt"], ascending=False)
-    
+    # Fyll inn NaN-verdier i "antallsolgt" med 0
+    df_sorted["antallsolgt"] = df_sorted["antallsolgt"].fillna(0)
+
+    # Beregn "Anbefalt innkjøp"
+    df_sorted["Anbefalt innkjøp"] = (df_sorted["antallsolgt"] / 4).apply(lambda x: max(1, round(x)))
+
+# Beregn total kostnad for anbefalt innkjøp
+total_cost = 0
+for index, row in df_sorted.iterrows():
+    # Anta en standard innkjøpspris for hver SKU (kan tilpasses)
+    purchase_price = 300  # Eksempel: 300 kr per enhet
+    total_cost += row["Anbefalt innkjøp"] * purchase_price
+    st.markdown(f"- **{row['sku']}**: Anbefalt innkjøp {row['Anbefalt innkjøp']} enheter")
+
+st.markdown(f"**Total kostnad for anbefalt innkjøp:** {total_cost:,.0f} kr")
     # Begrens antall rader i diagrammet til maks 25
     df_chart = df_sorted.head(25)
     

@@ -578,7 +578,7 @@ with tabs[5]:
 
 # ----------------------------
 # FANE 8 – Analytics Live-data (med datovelger)
-    with tabs[7]:
+with tabs[7]:
     st.header("Analytics Live-data")
     st.markdown("""
     **SmartDash Analytics Integrasjon**  

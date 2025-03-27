@@ -36,30 +36,7 @@ st.set_page_config(
     page_title="SmartDash",
     page_icon="🚀"  # eks. et alternativt emoji-ikon
 )
-# Legg til CSS for å gjøre fanene scrollbare
-st.markdown("""
-    <style>
-    /* Gjør fanene scrollbare */
-    div[data-testid="stTabs"] > div {
-        overflow-x: auto;
-        white-space: nowrap;
-        scrollbar-width: thin; /* Gjør scrollbaren tynnere */
-    }
-    div[data-testid="stTabs"]::-webkit-scrollbar {
-        height: 12px; /* Øk høyden på scrollbaren */
-    }
-    div[data-testid="stTabs"]::-webkit-scrollbar-thumb {
-        background-color: #888; /* Farge på scrollbaren */
-        border-radius: 10px; /* Gjør scrollbaren rundere */
-    }
-    div[data-testid="stTabs"]::-webkit-scrollbar-thumb:hover {
-        background-color: #555; /* Farge når man holder over scrollbaren */
-    }
-    div[data-testid="stTabs"] button {
-        flex-shrink: 0;
-    }
-    </style>
-""", unsafe_allow_html=True)
+Total kostnad for anbefalt innkjøp: 171,900 kr
 
 # Google Analytics (frontend-script)
 st.markdown("""
@@ -251,7 +228,7 @@ with tabs[2]:
     selected_product = st.selectbox(
         "Velg produktnavn",
         options=["Alle"] + sorted(product_sales_df["product_name"].dropna().unique()),
-        index=0,  # "Alle" som standard
+        index=1,  # Sett "Clip On Extension Virgin" som standard (juster indeksen hvis nødvendig)
         key="product_name_filter"
     )
 
@@ -297,19 +274,19 @@ with tabs[2]:
         # Beregn "Anbefalt innkjøp"
         df_sorted["Anbefalt innkjøp"] = (df_sorted["antallsolgt"] / 4).apply(lambda x: max(1, round(x)))
 
-        # Beregn total kostnad for anbefalt innkjøp
-        total_cost = 0
-        st.markdown("### Anbefalt innkjøpsstrategi")
-        st.markdown("Her er en oversikt over anbefalte innkjøp basert på salgsdata av valgt hovedprodukt i filtreringen over:")
+        with tabs[2]:
+    # Beregn total kostnad for anbefalt innkjøp
+    total_cost = 0
+    st.markdown("### Anbefalt innkjøpsstrategi")
+    st.markdown("Her er en oversikt over anbefalte innkjøp basert på salgsdata av valgt hovedprodukt i filtreringen over:")
 
-        for index, row in df_sorted.iterrows():
-            # Anta en standard innkjøpspris for hver SKU (kan tilpasses)
-            purchase_price = 300  # Eksempel: 300 kr per enhet
-            total_cost += row["Anbefalt innkjøp"] * purchase_price
-            st.markdown(f"- **{row['sku']}**: Anbefalt innkjøp {row['Anbefalt innkjøp']} enheter")
+    for index, row in df_sorted.iterrows():
+        # Anta en standard innkjøpspris for hver SKU (kan tilpasses)
+        purchase_price = 300  # Eksempel: 300 kr per enhet
+        total_cost += row["Anbefalt innkjøp"] * purchase_price
+        st.markdown(f"- **{row['sku']}**: Anbefalt innkjøp {row['Anbefalt innkjøp']} enheter")
 
         st.markdown(f"**Total kostnad for anbefalt innkjøp:** {total_cost:,.0f} kr")
-
 
         # Begrens antall rader i diagrammet til maks 25
         df_chart = df_sorted.head(25)

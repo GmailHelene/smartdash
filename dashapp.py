@@ -403,7 +403,7 @@ with tabs[3]:
         st.markdown("""
 # Konkurrentanalyse section
 st.header("Konkurrentanalyse")
-competitor_data = pd.DataFrame({
+""")competitor_data = pd.DataFrame({
     "Firma": ["LuxusHair", "HairLux", "StylePro", "GlamourHair"],
     "Omsetning": [6600000, 4300000, 2900000, 3500000]
 })

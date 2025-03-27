@@ -498,7 +498,7 @@ else:
         st.markdown(f"**Optimal budsjettert omsetning:** {optimal_revenue:,.0f} kr")
     else:
         st.info("Kostnadsdata utilgjengelig for beregning av optimal budsjettert omsetning.")  
-
+    st.markdown(f"""
     **Forklaring:**  
     Her brukes en fortjenestemargin på {user_margin_tab6 * 100:.0f}% (desimalverdi {user_margin_tab6}) for å beregne optimal budsjettert omsetning.  
     Formelen er:  

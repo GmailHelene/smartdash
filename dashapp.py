@@ -443,10 +443,6 @@ with tabs[4]:
 # ----------------------------
 with tabs[4]:
     st.header("Optimale produktpriser")
-    st.markdown("""
-    "Her kan bedriften få innsikt i optimal produktpriser basert på egne data og ønskede marginer."
-    """)
-
     st.markdown("### Optimale produktpriser & Optimal budsjettering")
     st.markdown("""
     Her beregnes optimal utsalgspris basert på reelle innkjøpspriser (LuxusHair sine fallback-priser brukes dersom ingen fil er lastet opp).  

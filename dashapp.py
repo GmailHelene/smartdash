@@ -1,7 +1,8 @@
+import os
+import json
 import streamlit as st
 import pandas as pd
 import plotly.express as px
-import os
 from datetime import datetime
 from io import BytesIO
 import re
@@ -11,8 +12,17 @@ from dash.dependencies import Output, Input
 from google.analytics.data_v1beta import BetaAnalyticsDataClient, RunReportRequest, Dimension, DateRange, Metric  # type: ignore
 import math
 from dash import no_update
+import dash_table
 
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = r"./key.json"
+# Hent innholdet fra Streamlit Secrets
+key_content = st.secrets["GOOGLE_APPLICATION_CREDENTIALS_CONTENT"]
+
+# Lagre innholdet midlertidig som en fil
+with open("key.json", "w") as key_file:
+    key_file.write(key_content)
+
+# Sett miljøvariabelen for Google Analytics
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "key.json"
 
 # Oppdater sidetittelen og ikonet i st.set_page_config:
 st.set_page_config(
@@ -20,32 +30,6 @@ st.set_page_config(
     page_title="SmartDash",
     page_icon="🚀"  # eks. et alternativt emoji-ikon
 )
-
-# Oppdatert CSS for et "kulere" design (du kan finjustere farger og font):
-st.markdown("""
-<style>
-    html, body, [class*="css"]  {
-        font-family: 'Helvetica Neue', sans-serif;
-        background-color: #f0f4f8;
-        color: #333;
-    }
-    .stTabs [data-baseweb="tab"] {
-        background-color: #4a90e2;
-        color: white;
-        border-radius: 8px 8px 0 0;
-        padding: 10px;
-        margin-right: 2px;
-    }
-    .stTabs [data-baseweb="tab"]:hover {
-        background-color: #6ba3e9;
-    }
-    .stTabs [aria-selected="true"] {
-        background-color: #357ABD !important;
-        font-weight: bold;
-    }
-</style>
-""", unsafe_allow_html=True)
-
 
 # Google Analytics (frontend-script)
 st.markdown("""

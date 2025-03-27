@@ -377,11 +377,11 @@ with tabs[3]:
         st.plotly_chart(fig_traffic, use_container_width=True, key="fig_traffic_chart")
     st.markdown("""
 **SEO-ekspertise og annonseplan:**  
-- Beste Keywords: luxushair behandling, premium extensions, keratin behandling  
-- Meta-tittel forslag: "LuxusHair – Eksklusive Hårbehandlinger og Premium Extensions"  
-- Meta-beskrivelse forslag: "Opplev luksus med våre profesjonelle hårbehandlinger. Bestill nå for en eksklusiv hårtransformation!"  
-- Annonseringsstrategi: Google Ads, Facebook Ads, Instagram Ads, YouTube, Pinterest  
-- Postingsplan: Instagram (3–-4 innlegg/uke), Facebook (2--3 innlegg/uke), YouTube (1 video/uke), Blogg (2--3 innlegg/måned), Pinterest (daglige pins)
+ Beste Keywords: luxushair behandling, premium extensions, keratin behandling  
+ Meta-tittel forslag: "LuxusHair  Eksklusive Hårbehandlinger og Premium Extensions"  
+ Meta-beskrivelse forslag: "Opplev luksus med våre profesjonelle hårbehandlinger. Bestill nå for en eksklusiv hårtransformation!"  
+ Annonseringsstrategi: Google Ads, Facebook Ads, Instagram Ads, YouTube, Pinterest  
+ Postingsplan: Instagram (3til4 innlegg/uke), Facebook (2til3 innlegg/uke), YouTube (1 video/uke), Blogg (2til3 innlegg/måned), Pinterest (daglige pins)
     """, unsafe_allow_html=True)
 
     if "date" not in traffic_df.columns:
@@ -402,10 +402,10 @@ with tabs[3]:
     st.markdown("""
     **SEO-ekspertise og annonseplan:**  
      Beste Keywords: luxushair behandling, premium extensions, keratin behandling  
-     Meta-tittel forslag: "LuxusHair – Eksklusive Hårbehandlinger og Premium Extensions"  
+     Meta-tittel forslag: "LuxusHair  Eksklusive Hårbehandlinger og Premium Extensions"  
      Meta-beskrivelse forslag: "Opplev luksus med våre profesjonelle hårbehandlinger. Bestill nå for en eksklusiv hårtransformation!"  
      Annonseringsstrategi: Google Ads, Facebook Ads, Instagram Ads, YouTube, Pinterest  
-     Postingsplan: Instagram (3-–4 innlegg/uke), Facebook (2–-3 innlegg/uke), YouTube (1 video/uke), Blogg (2–-3 innlegg/måned), Pinterest (daglige pins)
+     Postingsplan: Instagram (3til4 innlegg/uke), Facebook (2til3 innlegg/uke), YouTube (1 video/uke), Blogg (2til3 innlegg/måned), Pinterest (daglige pins)
     """, unsafe_allow_html=True)
 
     # Konkurrentanalyse section

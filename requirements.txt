@@ -1,0 +1,9 @@
+dash>=2.0.0
+dash_bootstrap_components
+plotly
+pandas
+Flask
+# Installer pywin32 for Windows uten å låse versjonen
+pywin32; platform_system=="Windows"
+gunicorn
+streamlit-aggrid

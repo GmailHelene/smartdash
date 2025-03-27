@@ -293,8 +293,8 @@ st.dataframe(
 )
     
 # Seksjon for lagerinnkjøp og anbefalinger
-    st.markdown("### Lagerinnkjøp og anbefalinger")
-    st.markdown("""
+st.markdown("### Lagerinnkjøp og anbefalinger")
+st.markdown("""
     Visningen under viser anbefalt innkjøpsstrategi for valgt hovedprodukt (filtreringen øverst) , endre for å se innkjøpsstrategi for andre produkter.
     Basert på salgsdata anbefaler vi varebestilling ca hver 3. uke, og følgende produktmiks/lagerinnkjøp for de neste 3 ukene:
     (LuxusHair har 3 ukers leveringstid fra bestilling til varer ankommer lageret):

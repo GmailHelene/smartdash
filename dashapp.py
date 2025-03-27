@@ -432,7 +432,6 @@ with tabs[4]:
     st.markdown("Estimerte omsetningstall for hovedkonkurrentene i 2024. Dette hjelper med å vurdere vår markedsposisjon.")
 
 # ----------------------------
-## ----------------------------
 # FANE 6 – Optimale produktpriser
 # ----------------------------
 with tabs[4]:
@@ -509,7 +508,7 @@ with tabs[4]:
         """
     **Forklaring - Optimal utsalgspris:**  
     Optimal utsalgspris beregnes slik:  
-    ((Innkjøpspris × (1 + overhead)) / (1 – fortjenestemargin))  
+    ((Innkjøpspris * (1 + overhead)) / (1 - fortjenestemargin))  
     Her brukes en overhead på {0:.0f}% og en fortjenestemargin på {1:.0f}%.  
     Utsalgsprisen inkluderer merverdiavgift.
     Velg hovedprodukt du ønsker se anbefalt utsalgspris for i dropdownen over.

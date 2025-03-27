@@ -555,16 +555,20 @@ with tabs[5]:
         "Bransjefaktoren, satt til 8 for EBITDA-metoden, er basert på historiske data og markedsforventninger. "
         "Faktoren reflekterer forhold som vekstpotensial, risiko og lønnsomhet."
     )
-    text = f"""
-    **Verdivurderingsmoddeller / Forklaring:**
 
-    - EBITDA: {ebitda:,.0f} kr  
-    - EBITDA x 8 = {ebitda * 8:,.0f} kr  
-    - DCF x 11 = {ebitda * 11:,.0f} kr  
+    st.markdown(
+    f"""
+**Verdivurdering – Forklaring:**
 
-    Forutsetter stabil drift og kontantstrøm.{extra}
+- EBITDA: {ebitda:,} kr  
+- EBITDA x 8 = {ebitda * 8:,} kr  
+- DCF x 11 = {ebitda * 11:,} kr  
 
-    {explanation}
+Forutsetter stabil drift og kontantstrøm.{extra}
+
+{explanation}
+"""
+)
     """
     st.plotly_chart(fig_value, use_container_width=True, key="fig_value_chart_verdi")
     st.markdown(text)

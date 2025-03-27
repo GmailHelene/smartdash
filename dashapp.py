@@ -304,7 +304,11 @@ with tabs[2]:
     (LuxusHair har 3 ukers leveringstid fra bestilling til varer ankommer lageret):
     """)
     
-    # Beregn anbefalt innkjøp (4 ukers buffer)
+   # Beregn anbefalt innkjøp (4 ukers buffer)
+   # Sørg for at "antallsolgt" kun inneholder numeriske verdier
+   df_sorted["antallsolgt"] = pd.to_numeric(df_sorted["antallsolgt"], errors="coerce").fillna(0)
+
+    # Beregn "Anbefalt innkjøp"
     df_sorted["Anbefalt innkjøp"] = (df_sorted["antallsolgt"] / 4).apply(lambda x: max(1, round(x)))
     total_cost = 0
     for index, row in df_sorted.iterrows():

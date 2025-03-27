@@ -36,7 +36,6 @@ st.set_page_config(
     page_title="SmartDash",
     page_icon="🚀"  # eks. et alternativt emoji-ikon
 )
-Total kostnad for anbefalt innkjøp: 171,900 kr
 
 # Google Analytics (frontend-script)
 st.markdown("""

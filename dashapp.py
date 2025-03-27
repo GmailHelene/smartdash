@@ -273,7 +273,6 @@ with tabs[2]:
         # Beregn "Anbefalt innkjøp"
         df_sorted["Anbefalt innkjøp"] = (df_sorted["antallsolgt"] / 4).apply(lambda x: max(1, round(x)))
 
-        with tabs[2]:
         # Beregn total kostnad for anbefalt innkjøp
         total_cost = 0
         st.markdown("### Anbefalt innkjøpsstrategi")

@@ -526,20 +526,27 @@ with tabs[6]:
             driftsresultat = None
     except Exception as e:
         driftsresultat = None
+
     value_df = pd.DataFrame({
         "Metode": ["EBITDA-metoden", "DCF-modellen"],
         "Verdi (kr)": [ebitda * 8, ebitda * 11]
     })
+
     fig_value = px.bar(value_df, x="Metode", y="Verdi (kr)", title="Estimert selskapsverdi")
+    st.plotly_chart(fig_value, use_container_width=True, key="fig_value_chart")
+
     extra = ""
     if driftsresultat is not None:
         extra = f"\n- Faktisk driftsresultat: {int(driftsresultat):,} kr (basert på kostnadsdatafilen)."
+
     explanation = (
         "Bransjefaktoren, satt til 8 for EBITDA-metoden, er basert på historiske data og markedsforventninger. "
         "Faktoren reflekterer forhold som vekstpotensial, risiko og lønnsomhet."
     )
-text = f"""
-**Verdivurdering  Forklaring:**  # Endret fra "–" til "-"
+
+    text = f"""
+**Verdivurdering - Forklaring:**
+
 - EBITDA: {ebitda:,.0f} kr  
 - EBITDA x 8 = {ebitda * 8:,.0f} kr  
 - DCF x 11 = {ebitda * 11:,.0f} kr  
@@ -548,8 +555,8 @@ Forutsetter stabil drift og kontantstrøm.{extra}
 
 {explanation}
 """
-    st.plotly_chart(fig_value, use_container_width=True, key="fig_value_chart")
     st.markdown(text)
+    st.plotly_chart(fig_value, use_container_width=True, key="fig_value_chart")
 
 # ----------------------------
 # FANE 8 – Analytics Live-data (med datovelger)

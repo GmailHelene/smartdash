@@ -556,7 +556,7 @@ with tabs[5]:
         "Faktoren reflekterer forhold som vekstpotensial, risiko og lønnsomhet."
     )
     text = f"""
-    **Verdivurdering – Forklaring:**
+    **Verdivurderingsmoddeller / Forklaring:**
 
     - EBITDA: {ebitda:,.0f} kr  
     - EBITDA x 8 = {ebitda * 8:,.0f} kr  

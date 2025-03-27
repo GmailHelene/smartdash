@@ -11,7 +11,7 @@ from dash.dependencies import Output, Input
 from google.analytics.data_v1beta import BetaAnalyticsDataClient, RunReportRequest, Dimension, DateRange, Metric  # type: ignore
 import math
 from dash import no_update
-import dash_table
+import dash_tablehttps://github.com/GmailHelene/smartdash/settings
 
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = r"./key.json"
 

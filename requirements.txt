@@ -1,5 +1,5 @@
-streamlit
+dash
+dash-bootstrap-components
 pandas
 plotly
-google-analytics-data
-dash
+flask

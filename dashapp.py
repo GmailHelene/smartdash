@@ -309,7 +309,7 @@ with tabs[2]:
     # Beregn "Anbefalt innkjøp"
 
         # Anta en standard innkjøpspris for hver SKU (kan tilpasses)
-        purchase_price = 300  # Eksempel: 300 kr per enhet
+        purchase_price = 300  
         total_cost += row["Anbefalt innkjøp"] * purchase_price
         st.markdown(f"- **{row['sku']}**: Anbefalt innkjøp {row['Anbefalt innkjøp']} enheter")
     

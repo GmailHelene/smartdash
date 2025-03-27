@@ -1,18 +1,5 @@
-import streamlit as st
-import pandas as pd
-import plotly.express as px
-import os
-from datetime import datetime
-from io import BytesIO
-import re
-import base64
-from dash import html, dcc, Dash
-from dash.dependencies import Output, Input
-from google.analytics.data_v1beta import BetaAnalyticsDataClient, RunReportRequest, Dimension, DateRange, Metric  # type: ignore
-import math
-from dash import no_update
-import dash_table
-dash>=2.0.0
-dash_bootstrap_components
+streamlit
+pandas
 plotly
-Flask
+google-analytics-data
+dash

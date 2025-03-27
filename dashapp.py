@@ -233,7 +233,6 @@ Formelen er:
 Altså, dersom de totale kostnadene er {total_cost:,.0f} kr,  
 må omsetningen være minst {optimal_revenue:,.0f} kr for å oppnå ønsket fortjeneste.
     """)
-
 # ----------------------------
 # FANE 3 – Lagerinnsikt & Innkjøpsstrategi (Filtrering på produktnavn og lengde)
 # ----------------------------
@@ -279,21 +278,36 @@ with tabs[2]:
             pattern = re.compile(rf"\b{re.escape(selected_length.strip())}\b", re.IGNORECASE)
             df = df[df["sku"].str.contains(pattern, na=False)]
 
-     # Beregn total kostnad for anbefalt innkjøp
-    st.markdown("### Anbefalt innkjøpsstrategi")
-    st.markdown("Her er en oversikt over anbefalte innkjøp basert på salgsdata av valgt hovedprodukt i filtreringen over:")
-    # Beregn total kostnad for anbefalt innkjøp
-    total_cost = 0
-    for index, row in df_sorted.iterrows():
-        # Anta en standard innkjøpspris for hver SKU (kan tilpasses)
-        purchase_price = 300  # Eksempel: 300 kr per enhet
-        total_cost += row["Anbefalt innkjøp"] * purchase_price
+    # Sjekk om df er tom
+    if df.empty:
+        st.error("Ingen data tilgjengelig for de valgte filtrene.")
+    else:
+        # Sorter data etter ønsket kolonne (f.eks. "antallsolgt")
+        df_sorted = df.sort_values(by="antallsolgt", ascending=False)
 
-    st.markdown(f"**Total kostnad for anbefalt innkjøp:** {total_cost:,.0f} kr")
-    st.markdown(f"- **{row['sku']}**: Anbefalt innkjøp {row['Anbefalt innkjøp']} enheter")
-    st.markdown(f"**Total kostnad for anbefalt innkjøp:** {total_cost:,.0f} kr")
+        # Fyll inn NaN-verdier i "antallsolgt" med 0
+        df_sorted["antallsolgt"] = df_sorted["antallsolgt"].fillna(0)
 
-    # Visualisering – stolpediagram med Plotly dark-tema (blå/mørkt diagram)
+        # Beregn "Anbefalt innkjøp"
+        df_sorted["Anbefalt innkjøp"] = (df_sorted["antallsolgt"] / 4).apply(lambda x: max(1, round(x)))
+
+        # Beregn total kostnad for anbefalt innkjøp
+        total_cost = 0
+        st.markdown("### Anbefalt innkjøpsstrategi")
+        st.markdown("Her er en oversikt over anbefalte innkjøp basert på salgsdata av valgt hovedprodukt i filtreringen over:")
+
+        for index, row in df_sorted.iterrows():
+            # Anta en standard innkjøpspris for hver SKU (kan tilpasses)
+            purchase_price = 300  # Eksempel: 300 kr per enhet
+            total_cost += row["Anbefalt innkjøp"] * purchase_price
+            st.markdown(f"- **{row['sku']}**: Anbefalt innkjøp {row['Anbefalt innkjøp']} enheter")
+
+        st.markdown(f"**Total kostnad for anbefalt innkjøp:** {total_cost:,.0f} kr")
+
+        # Begrens antall rader i diagrammet til maks 25
+        df_chart = df_sorted.head(25)
+
+        # Visualisering – stolpediagram med Plotly dark-tema (blå/mørkt diagram)
         fig = px.bar(
             df_chart, 
             x="sku", 
@@ -311,22 +325,14 @@ with tabs[2]:
             df_sorted[["sku", "product_name", "antallsolgt"]].head(40),
             height=800  # Juster høyden for å vise 40 rader uten scrolling
         )
+
     # Seksjon for lagerinnkjøp og anbefalinger
     st.markdown("### Lagerinnkjøp og anbefalinger")
     st.markdown("""
-    Visningen over viser antall solgt og anbefalt innkjøpsstrategi for valgt hovedprodukt (filtreringen øverst) , endre for å se innkjøpsstrategi for andre produkter.
+    Visningen over viser antall solgt og anbefalt innkjøpsstrategi for valgt hovedprodukt (filtreringen øverst). Endre filtrene for å se innkjøpsstrategi for andre produkter.
     Basert på salgsdata anbefaler vi varebestilling ca hver 3. uke, og overstående produktmiks/lagerinnkjøp av valgt produktvisning for de neste 3 ukene.
     (LuxusHair har 3 ukers leveringstid fra bestilling til varer ankommer lageret):
     """)
-    
-# Beregn anbefalt innkjøp (4 ukers buffer)
-# Sørg for at "antallsolgt" kun inneholder numeriske verdier
-
-# Beregn "Anbefalt innkjøp"
-
-    
-    
-    st.markdown(f"**Total kostnad for anbefalt innkjøp:** {total_cost:,.0f} kr")
 
 # FANE 4 – Digital Analyse & SEO
 # ----------------------------

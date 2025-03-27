@@ -218,7 +218,7 @@ må omsetningen være minst {optimal_revenue:,.0f} kr for å oppnå ønsket fort
 with tabs[2]:
     st.header("Lagerinnsikt & Innkjøpsstrategi (Filtrering på produktnavn og lengde)")
     
-    # Velg produktnavn
+# Velg produktnavn
     selected_product = st.selectbox(
         "Velg produktnavn",
         options=["Alle"] + sorted(product_sales_df["product_name"].dropna().unique()),
@@ -226,7 +226,7 @@ with tabs[2]:
         key="product_name_filter"
     )
     
-    # Velg lengde
+# Velg lengde
     selected_length = st.selectbox(
         "Velg lengde (cm)", 
         options=["Alle", "Tom", "40 cm", "50 cm", "55 cm", "60 cm"], 
@@ -234,20 +234,20 @@ with tabs[2]:
         key="length_filter"
     )
     
-    # Velg datoer
+# Velg datoer
     inv_start_date = st.date_input("Startdato", value=datetime(2023, 1, 1), key="sku_start")
     inv_end_date = st.date_input("Sluttdato", value=datetime(2025, 12, 31), key="sku_end")
     
-    # Filtrer data basert på dato
+# Filtrer data basert på dato
     mask = (product_sales_df["date"] >= pd.to_datetime(inv_start_date)) & \
            (product_sales_df["date"] <= pd.to_datetime(inv_end_date))
     df = product_sales_df.loc[mask].copy()
     
-    # Filtrer data for valgt produktnavn (hvis ikke "Alle")
+# Filtrer data for valgt produktnavn (hvis ikke "Alle")
     if selected_product != "Alle":
         df = df[df["product_name"] == selected_product]
     
-    # Filtrer data for valgt lengde
+# Filtrer data for valgt lengde
     if selected_length != "Alle":
         if selected_length == "Tom":
             df = df[~df["sku"].str.contains(r"\d+\s*cm", na=False, case=False)]
@@ -255,10 +255,10 @@ with tabs[2]:
             pattern = re.compile(rf"\b{re.escape(selected_length.strip())}\b", re.IGNORECASE)
             df = df[df["sku"].str.contains(pattern, na=False)]
     
-    # Fyll inn NaN-verdier i "antallsolgt" med 0
+# Fyll inn NaN-verdier i "antallsolgt" med 0
     df_sorted["antallsolgt"] = df_sorted["antallsolgt"].fillna(0)
 
-    # Beregn "Anbefalt innkjøp"
+# Beregn "Anbefalt innkjøp"
     df_sorted["Anbefalt innkjøp"] = (df_sorted["antallsolgt"] / 4).apply(lambda x: max(1, round(x)))
 
 # Beregn total kostnad for anbefalt innkjøp
@@ -270,29 +270,29 @@ for index, row in df_sorted.iterrows():
     st.markdown(f"- **{row['sku']}**: Anbefalt innkjøp {row['Anbefalt innkjøp']} enheter")
 
 st.markdown(f"**Total kostnad for anbefalt innkjøp:** {total_cost:,.0f} kr")
-    # Begrens antall rader i diagrammet til maks 25
-    df_chart = df_sorted.head(25)
+# Begrens antall rader i diagrammet til maks 25
+df_chart = df_sorted.head(25)
+
+# Visualisering – stolpediagram med Plotly dark-tema (blå/mørkt diagram)
+fig = px.bar(
+    df_chart, 
+    x="sku", 
+    y="antallsolgt", 
+    title=f"Antall solgt for valgt produkt og lengde",
+    hover_data=["product_name", "sku"],
+    template="plotly_dark"
+)
+
+st.plotly_chart(fig, use_container_width=True)
+st.markdown("**Filtrerte SKU-er sortert etter antall solgt:**")
+
+# Oppdatert tabellvisning (vis 40 rader uten scrolling, skjul første kolonne)
+st.dataframe(
+    df_sorted[["sku", "product_name", "antallsolgt"]].head(40),
+    height=800  # Juster høyden for å vise 40 rader uten scrolling
+)
     
-    # Visualisering – stolpediagram med Plotly dark-tema (blå/mørkt diagram)
-    fig = px.bar(
-        df_chart, 
-        x="sku", 
-        y="antallsolgt", 
-        title=f"Antall solgt for valgt produkt og lengde",
-        hover_data=["product_name", "sku"],
-        template="plotly_dark"
-    )
-    
-    st.plotly_chart(fig, use_container_width=True)
-    st.markdown("**Filtrerte SKU-er sortert etter antall solgt:**")
-    
-    # Oppdatert tabellvisning (vis 40 rader uten scrolling, skjul første kolonne)
-    st.dataframe(
-        df_sorted[["sku", "product_name", "antallsolgt"]].head(40),
-        height=800  # Juster høyden for å vise 40 rader uten scrolling
-    )
-    
-    # Seksjon for lagerinnkjøp og anbefalinger
+# Seksjon for lagerinnkjøp og anbefalinger
     st.markdown("### Lagerinnkjøp og anbefalinger")
     st.markdown("""
     Visningen under viser anbefalt innkjøpsstrategi for valgt hovedprodukt (filtreringen øverst) , endre for å se innkjøpsstrategi for andre produkter.
@@ -300,10 +300,10 @@ st.markdown(f"**Total kostnad for anbefalt innkjøp:** {total_cost:,.0f} kr")
     (LuxusHair har 3 ukers leveringstid fra bestilling til varer ankommer lageret):
     """)
     
-   # Beregn anbefalt innkjøp (4 ukers buffer)
-   # Sørg for at "antallsolgt" kun inneholder numeriske verdier
+# Beregn anbefalt innkjøp (4 ukers buffer)
+# Sørg for at "antallsolgt" kun inneholder numeriske verdier
 
-    # Beregn "Anbefalt innkjøp"
+# Beregn "Anbefalt innkjøp"
 
     
     st.markdown(f"**Total kostnad for anbefalt innkjøp:** {total_cost:,.0f} kr")

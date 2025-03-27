@@ -475,36 +475,48 @@ Velg hovedprodukt du ønsker se anbefalt utsalgspris for i dropdownen over.
         """.format(user_overhead_tab6 * 100, user_margin_tab6 * 100)
     )
 
-    # Hent fallback-innkjøpspris for det valgte hovedproduktet og beregn optimal pris
-    fallback_price = purchase_prices.get(normalized_main_product, None)
-    if fallback_price is not None:
-        totalkost = fallback_price * (1 + user_overhead_tab6)
-        computed_price = totalkost / (1 - user_margin_tab6)
-        optimal_price = (computed_price // 10) * 10 + 9
-        st.markdown(
-            f"### Optimale produktpriser\n**Optimal produktpris for {normalized_main_product}: {int(optimal_price):,} kr**"
-        )
-    else: 
-        st.info(
-            "Ingen standard innkjøpspris funnet for det valgte hovedproduktet. "
-            "Dataene er basert på LuxusHair sine standarddata, og oppdateres når din bedrift laster opp egne priser."
-        )
-    
-     st.markdown("### Optimal budsjettert omsetning")
-    st.markdown(f"""
-**Total kostnad:** {total_cost:,.0f} kr  
-**Optimal budsjettert omsetning:** {optimal_revenue:,.0f} kr  
+# Hent fallback-innkjøpspris for det valgte hovedproduktet og beregn optimal pris
+fallback_price = purchase_prices.get(normalized_main_product, None)
+if fallback_price is not None:
+    # Beregn totalkostnad og optimal pris
+    totalkost = fallback_price * (1 + user_overhead_tab6)
+    computed_price = totalkost / (1 - user_margin_tab6)
+    optimal_price = (computed_price // 10) * 10 + 9  # Rund av til nærmeste 10 og legg til 9 for "psykologisk pris"
 
-**Forklaring:**  
-Her brukes en fortjenestemargin på {selected_margin:.0f}% (desimalverdi {margin}) for å beregne optimal budsjettert omsetning.  
-Formelen er:  
-  Total kostnad / (1 – margin)  
-Altså, dersom de totale kostnadene er {total_cost:,.0f} kr,  
-må omsetningen være minst {optimal_revenue:,.0f} kr for å oppnå ønsket fortjeneste.
+    # Vis optimal produktpris
+    st.markdown(
+        f"### Optimale produktpriser\n**Optimal produktpris for {normalized_main_product}: {int(optimal_price):,} kr**"
+    )
+else:
+    # Vis melding hvis ingen pris er funnet
+    st.info(
+        "Ingen standard innkjøpspris funnet for det valgte hovedproduktet. "
+        "Dataene er basert på LuxusHair sine standarddata, og oppdateres når din bedrift laster opp egne priser."
+    )
+
+# Beregn og vis optimal budsjettert omsetning
+if total_cost is not None:
+    st.markdown("### Optimal budsjettert omsetning")
+    optimal_revenue = total_cost / (1 - user_margin_tab6)
+    st.markdown(f"""
+    **Total kostnad:** {total_cost:,.0f} kr  
+    **Optimal budsjettert omsetning:** {optimal_revenue:,.0f} kr  
+
+    **Forklaring:**  
+    Her brukes en fortjenestemargin på {user_margin_tab6 * 100:.0f}% (desimalverdi {user_margin_tab6}) for å beregne optimal budsjettert omsetning.  
+    Formelen er:  
+      Total kostnad / (1 – margin)  
+    Altså, dersom de totale kostnadene er {total_cost:,.0f} kr,  
+    må omsetningen være minst {optimal_revenue:,.0f} kr for å oppnå ønsket fortjeneste.
     """)
+else:
+    st.info("Kostnadsdata utilgjengelig for beregning av optimal budsjettert omsetning.")
+
+# Forklaring for fanen
+st.markdown("""
 Denne fanen presenterer en samlet oversikt over optimale utsalgspriser for hovedprodukter og budsjettert omsetning.  
 Dataene er basert på standarddata fra LuxusHair og oppdateres når egne priser og kostnadsdata lastes opp.
-    )
+""")
 # ----------------------------
 # FANE 7 – Verdivurdering
 with tabs[6]:

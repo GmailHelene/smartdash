@@ -36,6 +36,7 @@ st.set_page_config(
     page_title="SmartDash",
     page_icon="🚀"  # eks. et alternativt emoji-ikon
 )
+    st.markdown("""
 # Legg til CSS for å gjøre fanene scrollbare
      <style>
      /* Gjør fanene scrollbare */

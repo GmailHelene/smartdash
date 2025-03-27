@@ -1,5 +1,6 @@
 pandas==2.2.3
 dash
+dash_table
 numpy==2.2.4
 streamlit==1.44.0
 dash-bootstrap-components

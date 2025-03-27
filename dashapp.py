@@ -141,10 +141,10 @@ tabs = st.tabs([
     "Salgsdata",  
     "Kostnadsanalyse & Budsjett", 
     "Lagerinnsikt & Innkjøpsstrategi", 
-    "Digital Analyse & SEO", 
+    "SEO & Konkurrentanalyse", 
     "Konkurrentanalyse", 
-    "Bedriftsråd (Oppsummering)", 
-    "Verdivurdering", 
+    "Optimal produktprising", 
+    "Verdivurdering & Bedriftsråd", 
     "Analytics Live-data"
 ])
 
@@ -399,17 +399,20 @@ with tabs[3]:
         st.table(seo_agg)
         fig_traffic = px.bar(seo_agg, x="søkeord", y="antallvisninger",
                              title="Topp søkeord (visninger)", template="plotly_white")
-        st.plotly_chart(fig_traffic, use_container_width=True, key="fig_traffic_chart")
+        st.plotly_chart(fig_traffic, use_container_width=True, key="fig_traffic_chart_seo")
         st.markdown("""
     # Konkurrentanalyse section
     st.header("Konkurrentanalyse")
     """)
     competitor_data = pd.DataFrame({
-        "Firma": ["LuxusHair", "HairLux", "StylePro", "GlamourHair"],
+        "Firma": ["LuxusHair", "HairLux", "StylePro", "GlamourHair"], fig_comp = px.bar(competitor_data, x="Firma", y="Omsetning", title="Konkurrentanalyse")
+    st.plotly_chart(fig_comp, use_container_width=True, key="fig_comp_chart_konkurrent")
+
         "Omsetning": [6600000, 4300000, 2900000, 3500000]
     })
-    fig_comp = px.bar(competitor_data, x="Firma", y="Omsetning", title="Konkurrentanalyse")
-    st.plotly_chart(fig_comp, use_container_width=True, key="fig_comp_chart")
+   fig_comp = px.bar(competitor_data, x="Firma", y="Omsetning", title="Konkurrentanalyse")
+   st.plotly_chart(fig_comp, use_container_width=True, key="fig_comp_chart_konkurrent")
+
     st.markdown("Estimerte omsetningstall for hovedkonkurrentene i 2024. Dette hjelper med å vurdere vår markedsposisjon.")
 
 # Remove "Optimal budsjettert omsetning" section from "Bedriftsråd"
@@ -573,7 +576,7 @@ with tabs[5]:
 
     {explanation}
     """
-    st.plotly_chart(fig_value, use_container_width=True, key="fig_value_chart")
+    st.plotly_chart(fig_value, use_container_width=True, key="fig_value_chart_verdi")
     st.markdown(text)
 
 # ----------------------------

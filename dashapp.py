@@ -37,29 +37,29 @@ st.set_page_config(
     page_icon="🚀"  # eks. et alternativt emoji-ikon
 )
 # Legg til CSS for å gjøre fanene scrollbare
-st.markdown("""
-    <style>
-    /* Gjør fanene scrollbare */
-    div[data-testid="stTabs"] > div {
-        overflow-x: auto;
-        white-space: nowrap;
-        scrollbar-width: thin; /* Gjør scrollbaren tynnere */
-    }
-    div[data-testid="stTabs"]::-webkit-scrollbar {
-        height: 12px; /* Øk høyden på scrollbaren */
-    }
-    div[data-testid="stTabs"]::-webkit-scrollbar-thumb {
-        background-color: #888; /* Farge på scrollbaren */
-        border-radius: 10px; /* Gjør scrollbaren rundere */
-    }
-    div[data-testid="stTabs"]::-webkit-scrollbar-thumb:hover {
-        background-color: #555; /* Farge når man holder over scrollbaren */
-    }
-    div[data-testid="stTabs"] button {
-        flex-shrink: 0;
-    }
-    </style>
-""", unsafe_allow_html=True)
+ st.markdown("""
+     <style>
+     /* Gjør fanene scrollbare */
+     div[data-testid="stTabs"] > div {
+         overflow-x: auto;
+         white-space: nowrap;
+         scrollbar-width: thin; /* Gjør scrollbaren tynnere */
+     }
+     div[data-testid="stTabs"]::-webkit-scrollbar {
+         height: 12px; /* Øk høyden på scrollbaren */
+     }
+     div[data-testid="stTabs"]::-webkit-scrollbar-thumb {
+         background-color: #888; /* Farge på scrollbaren */
+         border-radius: 10px; /* Gjør scrollbaren rundere */
+     }
+     div[data-testid="stTabs"]::-webkit-scrollbar-thumb:hover {
+         background-color: #555; /* Farge når man holder over scrollbaren */
+     }
+     div[data-testid="stTabs"] button {
+         flex-shrink: 0;
+     }
+     </style>
+ """, unsafe_allow_html=True)
 
 # Google Analytics (frontend-script)
 st.markdown("""

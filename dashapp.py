@@ -341,14 +341,11 @@ with tabs[2]:
     (LuxusHair har 3 ukers leveringstid fra bestilling til varer ankommer lageret):
     """)
     
-# Beregn anbefalt innkjøp (4 ukers buffer)
-# Sørg for at "antallsolgt" kun inneholder numeriske verdier
+    # Beregn anbefalt innkjøp (4 ukers buffer)
+    # Sørg for at "antallsolgt" kun inneholder numeriske verdier
 
-# Beregn "Anbefalt innkjøp"
-
-    
-    
-st.markdown(f"**Total kostnad for anbefalt innkjøp:** {total_cost:,.0f} kr")
+    # Beregn "Anbefalt innkjøp"
+    st.markdown(f"**Total kostnad for anbefalt innkjøp:** {total_cost:,.0f} kr")
 
 # FANE 4 – Digital Analyse & SEO
 # ----------------------------

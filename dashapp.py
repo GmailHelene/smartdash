@@ -176,7 +176,23 @@ Last ned eksempelfilene, og erstatt med egne data. Følg nøyaktig samme struktu
         st.plotly_chart(fig, use_container_width=True, key="fig_sales_monthly")
         
     st.markdown("**Merk:** Dataene kan filtreres både på daglig og månedlig basis.")
+    
+# Definer globale variabler
+if "total_cost" not in st.session_state:
+    st.session_state["total_cost"] = None
+if "optimal_revenue" not in st.session_state:
+    st.session_state["optimal_revenue"] = None
 
+# Oppdater verdiene i Fane 2
+with tabs[1]:
+    # Beregn total_cost og optimal_revenue
+    st.session_state["total_cost"] = total_cost
+    st.session_state["optimal_revenue"] = optimal_revenue
+
+# Bruk verdiene i Fane 6
+with tabs[5]:
+    total_cost = st.session_state["total_cost"]
+    optimal_revenue = st.session_state["optimal_revenue"]
 # ----------------------------
 # FANE 2 – Kostnadsanalyse & Budsjett
 # ----------------------------
@@ -225,10 +241,12 @@ with tabs[2]:
     st.header("Lagerinnsikt & Innkjøpsstrategi (Filtrering på produktnavn og lengde)")
 
     # Velg produktnavn med standardverdi
+    product_options = ["Alle"] + sorted(product_sales_df["product_name"].dropna().unique())
+    default_index = product_options.index("Clip On Extension Virgin") if "Clip On Extension Virgin" in product_options else 0
     selected_product = st.selectbox(
         "Velg produktnavn",
-        options=["Alle"] + sorted(product_sales_df["product_name"].dropna().unique()),
-        index=product_sales_df["product_name"].dropna().unique().tolist().index("Clip On Extension Virgin") + 1,
+        options=product_options,
+        index=default_index,  # Sett "Clip On Extension Virgin" som standard
         key="product_name_filter"
     )
 
@@ -261,36 +279,29 @@ with tabs[2]:
             pattern = re.compile(rf"\b{re.escape(selected_length.strip())}\b", re.IGNORECASE)
             df = df[df["sku"].str.contains(pattern, na=False)]
 
-    # Sjekk om df er tom
-    if df.empty:
-        st.error("Ingen data tilgjengelig for de valgte filtrene.")
-    else:
-        # Sorter data etter ønsket kolonne (f.eks. "antallsolgt")
-        df_sorted = df.sort_values(by="antallsolgt", ascending=False)
-
-        # Fyll inn NaN-verdier i "antallsolgt" med 0
-        df_sorted["antallsolgt"] = df_sorted["antallsolgt"].fillna(0)
-
-        # Beregn "Anbefalt innkjøp"
-        df_sorted["Anbefalt innkjøp"] = (df_sorted["antallsolgt"] / 4).apply(lambda x: max(1, round(x)))
-
-         # Beregn total kostnad for anbefalt innkjøp
-    total_cost = 0
+     # Beregn total kostnad for anbefalt innkjøp
     st.markdown("### Anbefalt innkjøpsstrategi")
     st.markdown("Her er en oversikt over anbefalte innkjøp basert på salgsdata av valgt hovedprodukt i filtreringen over:")
-
+    # Sjekk om df er tom
+   if df_sorted.empty:
+    st.error("Ingen data tilgjengelig for beregning av total kostnad.")
+else:
+    # Beregn total kostnad for anbefalt innkjøp
+    total_cost = 0
     for index, row in df_sorted.iterrows():
         # Anta en standard innkjøpspris for hver SKU (kan tilpasses)
         purchase_price = 300  # Eksempel: 300 kr per enhet
         total_cost += row["Anbefalt innkjøp"] * purchase_price
-        st.markdown(f"- **{row['sku']}**: Anbefalt innkjøp {row['Anbefalt innkjøp']} enheter")
 
     st.markdown(f"**Total kostnad for anbefalt innkjøp:** {total_cost:,.0f} kr")
+    for index, row in df_sorted.iterrows():
+    st.markdown(f"- **{row['sku']}**: Anbefalt innkjøp {row['Anbefalt innkjøp']} enheter")
+    st.markdown(f"**Total kostnad for anbefalt innkjøp:** {total_cost:,.0f} kr")
 
-        # Begrens antall rader i diagrammet til maks 25
+    # Begrens antall rader i diagrammet til maks 25
         df_chart = df_sorted.head(25)
 
-        # Visualisering – stolpediagram med Plotly dark-tema (blå/mørkt diagram)
+    # Visualisering – stolpediagram med Plotly dark-tema (blå/mørkt diagram)
         fig = px.bar(
             df_chart, 
             x="sku", 

@@ -293,9 +293,6 @@ with tabs[2]:
     st.markdown(f"- **{row['sku']}**: Anbefalt innkjøp {row['Anbefalt innkjøp']} enheter")
     st.markdown(f"**Total kostnad for anbefalt innkjøp:** {total_cost:,.0f} kr")
 
-    # Begrens antall rader i diagrammet til maks 25
-        df_chart = df_sorted.head(25)
-
     # Visualisering – stolpediagram med Plotly dark-tema (blå/mørkt diagram)
         fig = px.bar(
             df_chart, 

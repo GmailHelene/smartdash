@@ -427,21 +427,15 @@ with tabs[4]:
     st.markdown("Estimerte omsetningstall for hovedkonkurrentene i 2024. Dette hjelper med å vurdere vår markedsposisjon.")
 
 # ----------------------------
-#  FANE 6 – Bedriftsråd (Oppsummering)
-with tabs[5]:
+## ----------------------------
+# FANE 6 – Optimale produktpriser
+# ----------------------------
+with tabs[4]:
     st.header("Optimale produktpriser")
     st.markdown("""
     Her kan bedriften få innsikt i optimal produktpriser basert på egne data og ønskede marginer.
     """)
-                
- Optimaliser lagerstyring: Juster vareinnkjøp etter faktisk etterspørsel.  
- Reduser kostnader: Forhandle med leverandører og effektiviser interne prosesser.  
- Forbedre markedsføring: Følg SEO-strategien og publiser jevnlig i SoMe-kanaler.  
- Øk konverteringsrate: Optimaliser brukeropplevelsen på nettsiden.  
- Overvåk jevnlig: Følg nøkkeltall og handle raskt ved budsjettavvik.
-    """)
 
-     
     st.markdown("### Optimale produktpriser & Optimal budsjettering")
     st.markdown("""
     Her beregnes optimal utsalgspris basert på reelle innkjøpspriser (LuxusHair sine fallback-priser brukes dersom ingen fil er lastet opp).  
@@ -508,12 +502,12 @@ with tabs[5]:
 
     st.markdown(
         """
-**Forklaring - Optimal utsalgspris:**  
-Optimal utsalgspris beregnes slik:  
-((Innkjøpspris × (1 + overhead)) / (1 – fortjenestemargin))  
-Her brukes en overhead på {0:.0f}% og en fortjenestemargin på {1:.0f}%.  
-Utsalgsprisen inkluderer merverdiavgift.
-Velg hovedprodukt du ønsker se anbefalt utsalgspris for i dropdownen over.
+    **Forklaring - Optimal utsalgspris:**  
+    Optimal utsalgspris beregnes slik:  
+    ((Innkjøpspris × (1 + overhead)) / (1 – fortjenestemargin))  
+    Her brukes en overhead på {0:.0f}% og en fortjenestemargin på {1:.0f}%.  
+    Utsalgsprisen inkluderer merverdiavgift.
+    Velg hovedprodukt du ønsker se anbefalt utsalgspris for i dropdownen over.
         """.format(user_overhead_tab6 * 100, user_margin_tab6 * 100)
     )
 
@@ -531,35 +525,13 @@ Velg hovedprodukt du ønsker se anbefalt utsalgspris for i dropdownen over.
             "Ingen standard innkjøpspris funnet for det valgte hovedproduktet. "
             "Dataene er basert på LuxusHair sine standarddata, og oppdateres når din bedrift laster opp egne priser."
         )
-    
-     # Budsjettert omsetning for FANE 6:
-    if total_cost is not None:
-        user_margin_budget = st.number_input(
-            "Angi ønsket fortjenestemargin (%) for budsjettert omsetning", 
-            min_value=0.0, 
-            max_value=100.0, 
-            value=30.0, 
-            step=1.0, 
-            key="margin_budget_tab6"
-        ) / 100.0
-        optimal_revenue = total_cost / (1 - user_margin_budget)
-        st.header(f"Optimal budsjettert omsetning: {int(optimal_revenue):,} kr")
-        st.markdown("""
-**Forklaring:**  
-Optimal budsjettert omsetning beregnes slik:  
-Total kostnad / (1 – fortjenestemargin)
-Denne fanen presenterer en samlet oversikt over optimale utsalgspriser for hovedprodukter og budsjettert omsetning.  
-Dataene er basert på standarddata fra LuxusHair og oppdateres når egne priser og kostnadsdata lastes opp.
-    else:
-        st.info("Kostnadsdata utilgjengelig for beregning av optimal budsjettert omsetning.")
-    st.markdown("""
-    )
 # ----------------------------
 # FANE 7 – Verdivurdering & Bedriftsråd
 # ----------------------------
+with tabs[5]:
     st.header("Verdivurdering & Bedriftsråd")
     st.markdown("""
-    Her oppsummeres bedriftsråd, samt en en enkel verdivurdering.
+    Her oppsummeres bedriftsråd, samt nøkkeltall knyttet til optimal budsjettering og produktprising.
                 
     - Optimaliser lagerstyring: Juster vareinnkjøp etter faktisk etterspørsel.  
     - Reduser kostnader: Forhandle med leverandører og effektiviser interne prosesser.  
@@ -606,13 +578,12 @@ Dataene er basert på standarddata fra LuxusHair og oppdateres når egne priser 
 
 # ----------------------------
 # FANE 8 – Analytics Live-data (med datovelger)
-with tabs[7]:
+    with tabs[7]:
     st.header("Analytics Live-data")
     st.markdown("""
     **SmartDash Analytics Integrasjon**  
     Tilpass spørringen ved å velge datoperiode. Standarddata benyttes – løsningen kan skreddersys med egne KPI-er.
     """)
-    
     # Legg til datovelger for Analytics (start- og sluttdato)
     ga_start_date = st.date_input("Velg GA startdato", value=datetime(2023, 1, 1), key="ga_start_date")
     ga_end_date = st.date_input("Velg GA sluttdato", value=datetime.today(), key="ga_end_date")

@@ -226,7 +226,6 @@ with tabs[2]:
     # Velg produktnavn med standardverdi
     selected_product = st.selectbox(
         "Velg produktnavn",
-        options=["Alle"] + sorted(product_sales_df["product_name"].dropna().unique()),
         index=1,  # Sett "Clip On Extensions Virgin" som standard
         key="product_name_filter"
     )

@@ -307,9 +307,7 @@ with tabs[2]:
    # Sørg for at "antallsolgt" kun inneholder numeriske verdier
 
     # Beregn "Anbefalt innkjøp"
-    df_sorted["Anbefalt innkjøp"] = (df_sorted["antallsolgt"] / 4).apply(lambda x: max(1, round(x)))
-    total_cost = 0
-    for index, row in df_sorted.iterrows():
+
         # Anta en standard innkjøpspris for hver SKU (kan tilpasses)
         purchase_price = 300  # Eksempel: 300 kr per enhet
         total_cost += row["Anbefalt innkjøp"] * purchase_price

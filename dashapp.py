@@ -446,8 +446,8 @@ with tabs[4]:
     st.markdown("### Optimale produktpriser & Optimal budsjettering")
     st.markdown("""
     # Her beregnes optimal utsalgspris basert på reelle innkjøpspriser (LuxusHair sine fallback-priser brukes dersom ingen fil er lastet opp).  
-    Du kan angi fortjenestemargin og overhead, og den resulterende utsalgsprisen vises (inkludert mva.).  
-    Velg hvilket hovedprodukt du vil se optimal utsalgspris for ved å bruke dropdownen nedenfor.
+        Du kan angi fortjenestemargin og overhead, og den resulterende utsalgsprisen vil synes, inkl mva.
+    Velg hvilket hovedprodukt du vil se optimalisert utsalgspris til ved å bruke dropdownen nedenfor.
     """)
 
     # Last inn innkjøpspriser (bruk standarddata hvis ingen fil er lastet opp)

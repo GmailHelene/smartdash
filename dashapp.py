@@ -359,7 +359,7 @@ with tabs[2]:
 with tabs[3]:
     st.header("SEO & Konkurrentanalyse")
     st.markdown("""
-# Combine "Konkurrentanalyse" with "Digital Analyse & SEO"""
+# Combine "Konkurrentanalyse" with "Digital Analyse & SEO"
     """)
     if "date" not in traffic_df.columns:
         st.error("Ingen 'date' kolonne funnet i trafikkdata.")

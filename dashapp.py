@@ -450,7 +450,6 @@ with tabs[5]:
 st.header("Optimale produktpriser")
 st.markdown("""
 ### Optimale produktpriser & Optimal budsjettering
-    """)
 
     if uploaded_prices is not None:
         df_prices = pd.read_csv(uploaded_prices)

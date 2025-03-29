@@ -235,11 +235,8 @@ with tabs[1]:
     st.markdown(f"**Optimal budsjettert omsetning:** {optimal_revenue:,.0f} kr")
     st.markdown(f"""
 **Forklaring:**  
-Her brukes en fortjenestemargin på {selected_margin:.0f}% (desimalverdi {margin}) for å beregne optimal budsjettert omsetning.  
-Formelen er:  
-  Total kostnad / (1 – margin)  
-Altså, dersom de totale kostnadene er {total_cost:,.0f} kr,  
-må omsetningen være minst {optimal_revenue:,.0f} kr for å oppnå ønsket fortjeneste.
+Endre denne typen linje til noe sånt som:
+st.markdown(f"Her brukes en overhead på {user_overhead_tab6 * 100:.0f}% og en fortjenestemargin på {user_margin_tab6 * 100:.0f}%.")
     """)
 
 # ----------------------------

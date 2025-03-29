@@ -511,11 +511,9 @@ with tabs[5]:
         **Forklaring - Optimal utsalgspris:**  
         Optimal utsalgspris beregnes slik:  
         ((Innkjøpspris * (1 + overhead)) / (1 - fortjenestemargin))  
-        Her brukes en overhead på {user_overhead_tab6 * 100:.0f}% og en fortjenestemargin på {user_margin_tab6 * 100:.0f}%.  
-        Utsalgsprisen inkluderer merverdiavgift.
+        st.markdown(f"Her brukes en overhead på {user_overhead_tab6 * 100:.0f}% og en fortjenestemargin på {user_margin_tab6 * 100:.0f}%.  
+        Utsalgsprisen inkluderer merverdiavgift.")
         """
-    )
-
     fallback_price = purchase_prices.get(normalized_main_product, None)
     if fallback_price is not None:
         totalkost = fallback_price * (1 + user_overhead_tab6)

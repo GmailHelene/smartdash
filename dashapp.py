@@ -561,8 +561,8 @@ with tabs[6]:
     extra = f"\n- Faktisk driftsresultat: {int(driftsresultat):,} kr (basert på kostnadsdatafilen)." if driftsresultat else ""
 
     explanation = (
-        f"Bransjefaktoren, satt til 8 for EBITDA-metoden, er basert på historiske data og markedsforventninger. "
-        f"Faktoren reflekterer forhold som vekstpotensial, risiko og lønnsomhet."
+        "Bransjefaktoren, satt til 8 for EBITDA-metoden, er basert på historiske data og markedsforventninger. "
+        "Faktoren reflekterer forhold som vekstpotensial, risiko og lønnsomhet."
     )
 
     st.markdown(f"""
@@ -637,4 +637,3 @@ with tabs[7]:
         st.plotly_chart(fig_live, use_container_width=True, key="fig_live_chart")
     except Exception as e:
         st.error(f"Kunne ikke hente live data: {e}")
-

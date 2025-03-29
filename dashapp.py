@@ -452,9 +452,7 @@ st.markdown("""
 ### Optimale produktpriser & Optimal budsjettering
 
 
-    df_prices = pd.read_csv(uploaded_prices)
-        purchase_prices = dict(zip(df_prices["Produkt"], df_prices["Pris"]))
-    
+        df_prices = pd.read_csv(uploaded_prices)
         purchase_prices = {
             "Clip On Extension Virgin 55 cm": 1300,
             "Clip On Extension Virgin 60 cm": 3900,

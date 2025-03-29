@@ -3,7 +3,7 @@ import json
 from dash import dash_table
 import streamlit as st
 import pandas as pd
-import plotly.express as px
+import plotlyf.express as px
 from datetime import datetime
 from io import BytesIO
 import re
@@ -451,10 +451,10 @@ with tabs[4]:
 # ----------------------------
 with tabs[5]:
     st.header("Optimale produktpriser")
-    st.markdown("""
+  st.markdown(f"""
+**Forklaring:**  
     Her kan bedriften få innsikt i optimal produktpriser basert på egne data og ønskede marginer.
     """)
-
     st.markdown("""
     ### Optimale produktpriser & Optimal budsjettering
     Her beregnes optimal utsalgspris basert på reelle innkjøpspriser (LuxusHair sine fallback-priser brukes dersom ingen fil er lastet opp).  

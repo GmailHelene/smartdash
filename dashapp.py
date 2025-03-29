@@ -527,7 +527,6 @@ with tabs[5]:
         st.markdown(f"### Optimale produktpriser\n**Optimal produktpris for {normalized_main_product}: {int(optimal_price):,} kr**")
     else:
         st.info("Ingen standard innkjøpspris funnet for det valgte hovedproduktet. Laster fallback.")
-
 # ----------------------------
 # FANE 7 – Verdivurdering & Bedriftsråd (riktig tabs[6])
 # ----------------------------
@@ -562,8 +561,8 @@ with tabs[6]:
     extra = f"\n- Faktisk driftsresultat: {int(driftsresultat):,} kr (basert på kostnadsdatafilen)." if driftsresultat else ""
 
     explanation = (
-        "Bransjefaktoren, satt til 8 for EBITDA-metoden, er basert på historiske data og markedsforventninger. "
-        "Faktoren reflekterer forhold som vekstpotensial, risiko og lønnsomhet."
+        f"Bransjefaktoren, satt til 8 for EBITDA-metoden, er basert på historiske data og markedsforventninger. "
+        f"Faktoren reflekterer forhold som vekstpotensial, risiko og lønnsomhet."
     )
 
     st.markdown(f"""
@@ -638,3 +637,4 @@ with tabs[7]:
         st.plotly_chart(fig_live, use_container_width=True, key="fig_live_chart")
     except Exception as e:
         st.error(f"Kunne ikke hente live data: {e}")
+

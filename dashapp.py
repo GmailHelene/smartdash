@@ -573,36 +573,43 @@ with tabs[6]:
     - DCF x 11 = {ebitda * 11:,} kr  
     Forutsetter stabil drift og kontantstrøm. {extra}
 
+   st.markdown(f"""
+    **Verdivurdering; Forklaring:**  
+    - EBITDA: {ebitda:,} kr  
+    - EBITDA x 8 = {ebitda * 8:,} kr  
+    - DCF x 11 = {ebitda * 11:,} kr  
+    Forutsetter stabil drift og kontantstrøm. {extra}
+
     {explanation}
     """)
-)
-    """
-    st.plotly_chart(fig_value, use_container_width=True, key="fig_value_chart_verdi")
-    st.markdown(text)
 
 # ----------------------------
 # FANE 8 – Analytics Live-data (med datovelger)
+# ----------------------------
 with tabs[7]:
     st.header("Analytics Live-data")
     st.markdown("""
     **SmartDash Analytics Integrasjon**  
     Tilpass spørringen ved å velge datoperiode. Standarddata benyttes – løsningen kan skreddersys med egne KPI-er.
     """)
-    # Legg til datovelger for Analytics (start- og sluttdato)
+
     ga_start_date = st.date_input("Velg GA startdato", value=datetime(2023, 1, 1), key="ga_start_date")
     ga_end_date = st.date_input("Velg GA sluttdato", value=datetime.today(), key="ga_end_date")
-    
+
     available_metrics = {
         "Active Users": "activeUsers",
         "New Users": "newUsers",
         "Sessions": "sessions",
         "Conversions": "conversions"
     }
-    selected_display_metrics = st.multiselect("Velg metrikker", list(available_metrics.keys()),
-                                              default=["Active Users", "New Users"],
-                                              key="ga_metric_live")
+    selected_display_metrics = st.multiselect(
+        "Velg metrikker", 
+        list(available_metrics.keys()),
+        default=["Active Users", "New Users"],
+        key="ga_metric_live"
+    )
     selected_metrics = [Metric(name=available_metrics[m]) for m in selected_display_metrics]
-    
+
     def get_live_analytics(selected_metrics, start_date, end_date):
         client = BetaAnalyticsDataClient()
         metric_names = [m.name for m in selected_metrics]
@@ -618,14 +625,14 @@ with tabs[7]:
             data[name] = [int(row.metric_values[i].value) for row in response.rows]
         df = pd.DataFrame(data)
         fig = px.line(
-            df, 
-            x="Dato", 
-            y=metric_names, 
+            df,
+            x="Dato",
+            y=metric_names,
             title="Live Analytics Data",
-            color_discrete_sequence=px.colors.qualitative.Bold  # Forbedrede farger
+            color_discrete_sequence=px.colors.qualitative.Bold
         )
         return fig
-    
+
     try:
         fig_live = get_live_analytics(selected_metrics, ga_start_date, ga_end_date)
         fig_live.update_layout(

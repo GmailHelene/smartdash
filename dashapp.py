@@ -450,8 +450,8 @@ with tabs[5]:
     st.header("Optimale produktpriser")
     st.markdown("""
     ### Optimale produktpriser & Optimal budsjettering
-    Her kan bedriften få innsikt i optimal produktpriser basert på egne data og ønskede marginer.
-    Her beregnes optimal utsalgspris basert på reelle innkjøpspriser (LuxusHair sine fallback-priser brukes dersom ingen fil er lastet opp).  
+     Bedriften får her innsikt i optimal produktpriser basert på egne data og ønskede marginer.
+     Her beregnes optimal utsalgspris basert på reelle innkjøpspriser (LuxusHair sine fallback-priser brukes dersom ingen fil er lastet opp).  
     Du kan angi fortjenestemargin og overhead, og den resulterende utsalgsprisen vil synes, inkl mva.  
     Velg hvilket hovedprodukt du vil se optimalisert utsalgspris til ved å bruke dropdownen nedenfor.
     """)

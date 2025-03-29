@@ -451,10 +451,10 @@ st.header("Optimale produktpriser")
 st.markdown("""
 ### Optimale produktpriser & Optimal budsjettering
 
-    if uploaded_prices is not None:
-        df_prices = pd.read_csv(uploaded_prices)
+
+    df_prices = pd.read_csv(uploaded_prices)
         purchase_prices = dict(zip(df_prices["Produkt"], df_prices["Pris"]))
-    else:
+    
         purchase_prices = {
             "Clip On Extension Virgin 55 cm": 1300,
             "Clip On Extension Virgin 60 cm": 3900,
@@ -469,11 +469,11 @@ st.markdown("""
             "Keratin Treatment": 100
         }
 
-    fallback_tekst = "\n".join([f"- {produkt}: {pris:,} kr" for produkt, pris in purchase_prices.items()])
+    fallback_tekst = "\n".join([f"- {produkt}: {pris:} kr" fprodukt, pris pr  purchase_prices.items()])
     st.markdown(f"**Standard innkjøpspriser (fallback):**\n\n{fallback_tekst}")
 
     lengths = ["40", "50", "55", "60"]
-    main_product_options = [f"{typ} {l} cm" for typ in ["Clip On Extension Virgin", "Tape On Extension Virgin", "Keratin Extension Virgin"] for l in lengths]
+    main_product_options = [f"{typ} {l} cm"  typ i ["Clip On Extension Virgin", "Tape On Extension Virgin", "Keratin Extension Virgin"] for l in lengths]
     default_main = "Clip On Extension Virgin 40 cm"
     default_main_index = main_product_options.index(default_main) if default_main in main_product_options else 0
 

@@ -573,13 +573,6 @@ with tabs[6]:
     - DCF x 11 = {ebitda * 11:,} kr  
     Forutsetter stabil drift og kontantstrøm. {extra}
 
-   st.markdown(f"""
-    **Verdivurdering; Forklaring:**  
-    - EBITDA: {ebitda:,} kr  
-    - EBITDA x 8 = {ebitda * 8:,} kr  
-    - DCF x 11 = {ebitda * 11:,} kr  
-    Forutsetter stabil drift og kontantstrøm. {extra}
-
     {explanation}
     """)
 

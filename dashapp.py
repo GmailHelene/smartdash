@@ -450,9 +450,6 @@ with tabs[5]:
 st.header("Optimale produktpriser")
 st.markdown("""
 ### Optimale produktpriser & Optimal budsjettering
-Bedriften får her innsikt i optimal produktpriser basert på egne data og ønskede marginer.
-Du kan angi fortjenestemargin og overhead, og den resulterende utsalgsprisen vil synes, inkl mva.  
-Velg hvilket hovedprodukt du vil se optimalisert utsalgspris til ved å bruke dropdownen nedenfor.
     """)
 
     if uploaded_prices is not None:

@@ -1,31 +1,240 @@
-name: Python application
+import os
+import json
+from dash import dash_table
+import streamlit as st
+import pandas as pd
+import plotly.express as px
+from datetime import datetime
+from io import BytesIO
+import re
+import base64
+from dash import html, dcc, Dash
+from dash.dependencies import Output, Input
+from google.analytics.data_v1beta import BetaAnalyticsDataClient, RunReportRequest, Dimension, DateRange, Metric
+import math
+from dash import no_update
 
-on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
+# ---------- KONFIG ----------
+# Bruker nøkkelfilen direkte
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "key.json"
 
-jobs:
-  build:
+st.set_page_config(
+    layout="wide",
+    page_title="SmartDash",
+    page_icon="🚀"
+)
 
-    runs-on: ubuntu-latest
+# Legg inn wrapper div for topp og bunn scrollbars
+st.markdown("""
+<div class="scroll-wrapper-top"></div>
+""", unsafe_allow_html=True)
 
-    steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
+st.markdown("""
+<style>
+div[data-testid="stTabs"] > div {
+    overflow-x: auto;
+    white-space: nowrap;
+    scrollbar-width: thin;
+}
+div[data-testid="stTabs"]::-webkit-scrollbar {
+    height: 12px;
+}
+div[data-testid="stTabs"]::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 10px;
+}
+div[data-testid="stTabs"]::-webkit-scrollbar-thumb:hover {
+    background-color: #555;
+}
+div[data-testid="stTabs"] button {
+    flex-shrink: 0;
+}
+  div[data-testid="stAppViewContainer"] {
+    padding-bottom: 3rem;
+  }
+  .scroll-wrapper-top::before, .scroll-wrapper-bottom::after {
+    content: '';
+    display: block;
+    height: 12px;
+    background: linear-gradient(to right, #ccc 0%, #888 50%, #ccc 100%);
+    border-radius: 10px;
+    margin: 10px 0;
+  }
+  body {
+    font-family: 'Segoe UI', sans-serif;
+    background-color: #f5f7fa;
+    color: #222;
+  }
+  .main > div {
+    padding: 1rem 2rem;
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  }
+  .block-container {
+    padding-top: 1rem;
+    padding-bottom: 2rem;
+  }
+  header[data-testid="stHeader"] {
+    background: #ffffffaa;
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid #eee;
+  }
+  h1, h2, h3, h4, h5 {
+    color: #1f2937;
+  }
+</style>
+""", unsafe_allow_html=True)
 
-    - name: Set up Python
-      uses: actions/setup-python@v2
-      with:
-        python-version: '3.x'  # Velg din Python-versjon
+st.markdown("""
+<!-- Google Analytics script -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-Q4PWWTXBB4"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-Q4PWWTXBB4');
+</script>
+""", unsafe_allow_html=True)
 
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
+# ---------- DATAOPPLASTING ---------------
+st.sidebar.header("📂 Last opp dine data")
+uploaded_sales = st.sidebar.file_uploader("Last opp Salgsdata", type="csv", key="sales")
+uploaded_cost = st.sidebar.file_uploader("Last opp Kostnadsdata", type="csv", key="cost")
+uploaded_traffic = st.sidebar.file_uploader("Last opp Trafikkdata", type="csv", key="traffic")
+uploaded_prod = st.sidebar.file_uploader("Last opp Produktdata", type="csv", key="prod")
+uploaded_prices = st.sidebar.file_uploader("Last opp Innkjøpspriser", type="csv", key="prices")
 
-    - name: Run tests
-      run: |
-        # Legg til kommandoene for å kjøre testene dine her
-        pytest
+@st.cache_data
+def load_sales_data(filepath):
+    df = pd.read_csv(filepath)
+    df.columns = df.columns.str.strip().str.lower()
+    rename_map = {"date": "dato", "sales": "omsetning", "antallsolgt": "antallordre"}
+    df = df.rename(columns=rename_map)
+    if "dato" in df.columns:
+        df["Dato"] = pd.to_datetime(df["dato"], errors="coerce").dt.date
+    if "omsetning" in df.columns:
+        df["Omsetning"] = pd.to_numeric(df["omsetning"].astype(str).str.replace(" ", ""), errors="coerce")
+    if "antallordre" in df.columns:
+        df["Ant. ordre"] = pd.to_numeric(df["antallordre"], errors="coerce")
+    return df
+
+def read_standard_csv(filepath, date_col="date"):
+    df = pd.read_csv(filepath)
+    df.columns = df.columns.str.strip()
+    if date_col in df.columns:
+        df[date_col] = pd.to_datetime(df[date_col], errors="coerce")
+    elif "dato" in df.columns:
+        df.rename(columns={"dato": date_col}, inplace=True)
+        df[date_col] = pd.to_datetime(df[date_col], errors="coerce")
+    else:
+        st.error("Ingen dato-kolonne funnet.")
+    return df
+
+# Dynamically determine the script's directory
+script_dir = os.path.dirname(os.path.abspath(__file__))
+
+# Update file paths to use the script's directory
+if uploaded_sales is not None:
+    sales_df = load_sales_data(uploaded_sales)
+else:
+    sales_df = load_sales_data(os.path.join(script_dir, "data", "standardized_sales.csv"))
+
+if uploaded_cost is not None:
+    cost_df = read_standard_csv(uploaded_cost, date_col="date")
+else:
+    cost_df = read_standard_csv(os.path.join(script_dir, "data", "standardized_cost.csv"), date_col="date")
+
+if uploaded_traffic is not None:
+    traffic_df = read_standard_csv(uploaded_traffic, date_col="date")
+else:
+    traffic_df = read_standard_csv(os.path.join(script_dir, "data", "standardized_traffic.csv"), date_col="date")
+
+if uploaded_prod is not None:
+    product_sales_df = read_standard_csv(uploaded_prod, date_col="date")
+else:
+    product_sales_df = read_standard_csv(os.path.join(script_dir, "data", "standardized_product_sales.csv"), date_col="date")
+
+if uploaded_prices is not None:
+    df_prices = pd.read_csv(uploaded_prices)
+else:
+    df_prices = pd.read_csv(os.path.join(script_dir, "data", "standardized_prices.csv"))
+
+# ---------- FORTSETTELSE AV APPEN -----------
+
+# ---------- TABS ----------
+tabs = st.tabs([
+    "Salgsdata",  
+    "Kostnadsanalyse & Budsjett", 
+    "Lagerinnsikt & Innkjøpsstrategi", 
+    "SEO & Konkurrentanalyse", 
+    "Optimal produktprising", 
+    "Verdivurdering & Bedriftsråd", 
+    "Analytics Live-data"  # Dette er den siste taben (indeks 6)
+])
+
+# ---------- FANE 1 – Salgsdata ----------------
+with tabs[0]:
+    st.subheader("Salgsdata")
+    st.dataframe(sales_df)
+
+# ---------- FANE 2 – Kostnadsanalyse & Budsjett ----------
+with tabs[1]:
+    st.subheader("Kostnadsanalyse & Budsjett")
+    st.dataframe(cost_df)
+
+# ---------- FANE 3 – Lagerinnsikt & Innkjøpsstrategi ----------
+with tabs[2]:
+    st.subheader("Lagerinnsikt & Innkjøpsstrategi")
+    st.dataframe(product_sales_df)
+
+# ---------- FANE 4 – SEO & Konkurrentanalyse ----------
+with tabs[3]:
+    st.subheader("SEO & Konkurrentanalyse")
+    st.dataframe(traffic_df)
+
+# ---------- FANE 5 – Optimal produktprising ----------
+with tabs[4]:  # Endret til riktig indeks for denne taben
+    st.subheader("Optimal produktprising")
+    st.dataframe(df_prices)
+    st.markdown("Her kan du analysere produktprising basert på kostnader og marginer.")
+    # Eksempel på en enkel analyse
+    if "pris" in df_prices.columns and "kostnad" in df_prices.columns:
+        df_prices["Margin (%)"] = ((df_prices["pris"] - df_prices["kostnad"]) / df_prices["kostnad"]) * 100
+        st.dataframe(df_prices[["produkt", "pris", "kostnad", "Margin (%)"]])
+        fig_pricing = px.bar(df_prices, x="produkt", y="Margin (%)", title="Margin per produkt")
+        st.plotly_chart(fig_pricing, use_container_width=True)
+
+# ---------- FANE 6 – Verdivurdering & Bedriftsråd ----------
+with tabs[5]:  # Endret til riktig indeks for denne taben
+    st.subheader("Verdivurdering & Bedriftsråd")
+    ebitda = 755000
+    verdi_ebitda = ebitda * 8
+    verdi_dcf = ebitda * 11
+    verdivurdering_df = pd.DataFrame({
+        "Metode": ["EBITDA x 8", "DCF x 11"],
+        "Verdi (kr)": [verdi_ebitda, verdi_dcf]
+    })
+    st.dataframe(verdivurdering_df)
+    fig_val = px.bar(verdivurdering_df, x="Metode", y="Verdi (kr)", title="Estimert selskapsverdi")
+    st.plotly_chart(fig_val, use_container_width=True)
+
+# ---------- FANE 7 – Analytics Live-data ----------
+with tabs[6]:  # Endret til riktig indeks for denne taben
+    st.subheader("Analytics Live-data")
+    st.markdown("Velg datoperiode og hvilke Google Analytics-metrikker du vil se.")
+    ga_start = st.date_input("Startdato", value=datetime(2024, 1, 1))
+    ga_end = st.date_input("Sluttdato", value=datetime.today())
+    st.markdown(f"Viser data fra **{ga_start}** til **{ga_end}** (dummyvisning).")
+    dummy_df = pd.DataFrame({
+        "Dato": pd.date_range(start=ga_start, end=ga_end, freq="D"),
+        "activeUsers": [100 + i for i in range((ga_end - ga_start).days + 1)]
+    })
+    fig_dummy = px.line(dummy_df, x="Dato", y="activeUsers", title="Aktive brukere over tid")
+    st.plotly_chart(fig_dummy, use_container_width=True)
+
+# Legg inn scrollbar etter siste tab
+st.markdown("""
+<div class="scroll-wrapper-bottom"></div>
+""", unsafe_allow_html=True)
+

@@ -244,13 +244,11 @@ with tabs[0]:
     st.markdown("### Slik bruker dere SmartDash")
     st.markdown("""
 **Templatemaler for opplasting**  
-Her finner dere eksempelfiler for opplasting, basert på Luxushair sine data som vises som standard/eksempler her i Dashboardet.  
-Last ned eksempelfilene, og erstatt med egne data. Følg nøyaktig samme struktur og ha nøyaktig samme navn på filene når de lastes opp igjen i venstre sidebar.  
-- [Standardisert salgsdata CSV](standardized_sales.csv)  
-- [Standardisert kostnadsdata CSV](standardized_cost.csv)  
-- [Standardisert trafikkdata CSV](standardized_traffic.csv)  
-- [Standardisert produktdata CSV](standardized_product_sales.csv)  
-- [Standardisert innkjøpspriser CSV](standardized_prices.csv)
+Se nederst i denne tabben for
+ eksempelfiler for opplasting, basert på Luxushair sine data som vises som standard/eksempler her i Dashboardet.  
+Last ned eksempelfilene, og erstatt med egne data. Følg nøyaktig samme struktur og ha nøyaktig samme navn på filene når de lastes opp igjen i 
+venstre sidebar.  
+
     """)
     st.header("Salgsdata")
     st.markdown("Her kan du se salgsdata for valgte perioder. Velg om du vil se data daglig eller aggregert per måned, og hvilken visualisering du ønsker.")
@@ -290,6 +288,31 @@ Last ned eksempelfilene, og erstatt med egne data. Følg nøyaktig samme struktu
         st.plotly_chart(fig, use_container_width=True, key="fig_sales_monthly")
         
     st.markdown("**Merk:** Dataene kan filtreres både på daglig og månedlig basis.")
+
+    # Templatemaler for nedlasting
+    st.markdown("### Templatemaler for opplasting")
+    st.markdown("Her finner dere eksempelfiler for opplasting. Last ned filene nedenfor:")
+
+    # Opprett nedlastingsknapper for hver fil
+    template_files = {
+        "Standardisert salgsdata CSV": "standardized_sales.csv",
+        "Standardisert kostnadsdata CSV": "standardized_cost.csv",
+        "Standardisert trafikkdata CSV": "standardized_traffic.csv",
+        "Standardisert produktdata CSV": "standardized_product_sales.csv",
+        "Standardisert innkjøpspriser CSV": "standardized_prices.csv"
+    }
+
+    for label, filepath in template_files.items():
+        try:
+            with open(filepath, "rb") as file:
+                st.download_button(
+                    label=f"Last ned {label}",
+                    data=file,
+                    file_name=filepath,
+                    mime="text/csv"
+                )
+        except FileNotFoundError:
+            st.error(f"Filen {filepath} ble ikke funnet.")
 
 # ----------------------------
 # FANE 2 – Kostnadsanalyse & Budsjett
@@ -704,3 +727,4 @@ with tabs[7]:
         st.plotly_chart(fig_live, use_container_width=True, key="fig_live_chart")
     except Exception as e:
         st.error(f"Kunne ikke hente live data: {e}")
+

@@ -696,7 +696,7 @@ with tabs[7]:
         client = BetaAnalyticsDataClient()
         metric_names = [m.name for m in selected_metrics]
         request = RunReportRequest(
-            property="properties/2750762604", 
+            property="properties/283157216", 
             dimensions=[{"name": "date"}],
             metrics=[{"name": name} for name in metric_names],
             date_ranges=[{"start_date": start_date.strftime("%Y-%m-%d"), "end_date": end_date.strftime("%Y-%m-%d")}]

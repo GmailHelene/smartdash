@@ -678,7 +678,7 @@ with tabs[7]:
     """)
     
     # Legg til datovelger for Analytics (start- og sluttdato)
-    ga_start_date = st.date_input("Velg GA startdato", value=datetime(2023, 1, 1), key="ga_start_date")
+    ga_start_date = st.date_input("Velg GA startdato", value=datetime(2025, 1, 1), key="ga_start_date")
     ga_end_date = st.date_input("Velg GA sluttdato", value=datetime.today(), key="ga_end_date")
     
     available_metrics = {
@@ -696,7 +696,7 @@ with tabs[7]:
         client = BetaAnalyticsDataClient()
         metric_names = [m.name for m in selected_metrics]
         request = RunReportRequest(
-            property="properties/283157216",
+            property="properties/2750762604", 
             dimensions=[{"name": "date"}],
             metrics=[{"name": name} for name in metric_names],
             date_ranges=[{"start_date": start_date.strftime("%Y-%m-%d"), "end_date": end_date.strftime("%Y-%m-%d")}]
